@@ -1,0 +1,65 @@
+/* Advibe Agency — site-wide TubesCursor background
+   A single fixed WebGL canvas (mouse-follow color tubes) sits behind the
+   whole page, with one fixed scrim on top of it whose opacity is driven
+   per-section by tubes-cursor.js (IntersectionObserver -> --tubes-scrim).
+   See tubes-cursor.js for the JS half of this.
+
+   Stacking: both sit at negative z-index, so they paint below the root
+   stacking context's normal content (level 0) automatically — no z-index
+   arms race with the rest of the page needed. The Hero section already
+   has its own opaque background stack (.hero-media, ::before glow) at
+   z-index 0/1 sitting at the SAME root level as everything else (because
+   .hero itself never opts into its own stacking context), so it already
+   fully occludes this layer with zero extra work — the canvas is simply
+   invisible there, by construction, and Hero is intentionally left alone. */
+
+/* The canvas needs a parent whose own box IS the viewport (not <body>,
+   which is as tall as the whole page's content) — some builds of the
+   underlying cursor library size their render target off
+   canvas.parentElement's bounding rect rather than the canvas's own
+   fixed-position box, and canvas.parentElement === <body> otherwise
+   produces a render buffer thousands of pixels tall. */
+#tubes-cursor-viewport {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none; /* never intercepts real clicks — see tubes-cursor.js */
+}
+#tubes-cursor-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+}
+
+#tubes-cursor-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(8, 8, 8, var(--tubes-scrim, 0.82));
+  transition: background-color 700ms var(--ease-out);
+  pointer-events: none;
+}
+
+/* Reduced motion or a touch/coarse pointer (no persistent cursor to
+   "follow", and a moving WebGL background is unnecessary GPU/battery cost
+   on mobile): tubes-cursor.js adds this attribute instead of ever
+   initializing the WebGL app, and the page reads exactly as it would
+   without this feature — solid --bg, no scrim, no canvas. */
+[data-tubes="off"] #tubes-cursor-viewport,
+[data-tubes="off"] #tubes-cursor-scrim {
+  display: none;
+}
+
+/* Panel sections keep their "elevated band" identity (still reads as a
+   distinct surface, not full transparency) but are no longer fully
+   opaque — a faint hint of tube color can bleed through on bright
+   frames. Plain sections (no .bg-panel) were already transparent by
+   default; the scrim above is what protects their text contrast.
+   30,30,30 (not --bg-elevated's own 28,28,28) at 95% opacity composited
+   over the canvas's near-black backdrop lands back on ~#1C1C1C — so with
+   the canvas at rest (paused tab, reduced motion, load-in-progress) a
+   panel looks identical to the original solid fill, not darker. */
+.bg-panel {
+  background: rgba(30, 30, 30, 0.95);
+}

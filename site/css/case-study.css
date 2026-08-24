@@ -1,0 +1,152 @@
+/* Advibe Agency — "Before Advibe / After Advibe" case study section
+   (Healthcare client, Google Ads — real figures, matches the copy in
+   index.html's #results section). Host-page styles for the toggle tabs,
+   the plain "before" report mockup, and the "what we changed" list. The
+   "after" panel reuses styles.css's existing .results-panel/.bar-fill/
+   .big-stat — the same real numbers, just now behind the toggle too. */
+
+.case-study-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-2);
+  font-family: var(--font-data);
+  font-size: 13px;
+  color: var(--text-faint);
+}
+.case-study-meta .dot { color: var(--border-strong); }
+
+.case-study-result-line {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold-300);
+}
+
+/* ---------- Before Advibe / After Advibe toggle ---------- */
+
+.compare-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin: 0 auto var(--sp-6);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+}
+.compare-toggle-row { display: flex; justify-content: center; }
+.compare-toggle button {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: color var(--dur-micro) var(--ease-out), background var(--dur-micro) var(--ease-out);
+}
+.compare-toggle button:hover { color: var(--text); }
+.compare-toggle button.active { background: var(--bg-elevated-2); color: var(--text); box-shadow: 0 0 0 1px var(--border-strong); }
+.compare-toggle button:focus-visible { outline: 2px solid var(--gold-400); outline-offset: 2px; }
+
+.compare-panels { position: relative; max-width: 560px; margin: 0 auto; }
+.compare-panel { display: none; }
+.compare-panel.active { display: block; }
+.compare-panel-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: var(--font-data);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: var(--sp-3);
+}
+.compare-panel-label .swatch { width: 8px; height: 8px; border-radius: 50%; }
+.compare-panel-label.is-before .swatch { background: var(--text-faint); }
+.compare-panel-label.is-after .swatch { background: var(--gold-400); box-shadow: 0 0 8px rgba(221, 174, 92, 0.6); }
+
+/* ---------- "Before Advibe": deliberately plain, dated ---------- */
+
+.before-report {
+  background: #EDEBE6;
+  color: #1a1a1a;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #cfccc4;
+}
+.before-report-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 10px 14px;
+  background: #DAD7CF;
+  border-bottom: 1px solid #cfccc4;
+}
+.before-report-dots { display: flex; gap: 6px; }
+.before-report-dots span { width: 9px; height: 9px; border-radius: 50%; background: #b9b6ad; display: block; }
+.before-report-title { font-size: 12px; color: #55524a; }
+.before-report-list { margin: 0; padding: 20px; }
+.before-report-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 10px 0;
+  border-bottom: 1px dashed #cfccc4;
+  font-size: 14px;
+}
+.before-report-row:last-child { border-bottom: none; }
+.before-report-row dt { color: #55524a; }
+.before-report-row dd { margin: 0; font-weight: 700; text-align: right; }
+.before-report-foot {
+  padding: 12px 20px;
+  border-top: 1px solid #cfccc4;
+  font-size: 12px;
+  color: #6b675e;
+  font-style: italic;
+}
+
+/* ---------- What we changed ---------- */
+
+.changed-grid {
+  display: grid;
+  gap: var(--sp-4);
+  margin-top: var(--sp-8);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 700px) {
+  .changed-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.changed-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+}
+.changed-card svg { width: 20px; height: 20px; color: var(--gold-400); flex-shrink: 0; margin-top: 2px; }
+.changed-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+.changed-card strong { color: var(--text); font-weight: 700; }
+
+/* ---------- Section CTA ---------- */
+
+.case-study-cta {
+  text-align: center;
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-7);
+  border-top: 1px solid var(--border);
+}
+.case-study-cta p { color: var(--text-muted); margin-bottom: var(--sp-4); }
+
+@media (prefers-reduced-motion: reduce) {
+  .compare-toggle button { transition: none; }
+}

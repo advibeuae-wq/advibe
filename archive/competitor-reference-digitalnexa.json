@@ -1,0 +1,264 @@
+{
+  "data": {
+    "branding": {
+      "colorScheme": "dark",
+      "fonts": [
+        {
+          "family": "Nunito",
+          "role": "body"
+        },
+        {
+          "family": "Montserrat",
+          "role": "heading"
+        }
+      ],
+      "colors": {
+        "primary": "#9354FF",
+        "secondary": "#272C68",
+        "accent": "#9354FF",
+        "background": "#000000",
+        "textPrimary": "#000000",
+        "link": "#AD7BE6"
+      },
+      "typography": {
+        "fontFamilies": {
+          "primary": "Nunito",
+          "heading": "Montserrat"
+        },
+        "fontStacks": {
+          "heading": [
+            "Nunito",
+            "sans-serif"
+          ],
+          "body": [
+            "Nunito",
+            "sans-serif"
+          ],
+          "paragraph": [
+            "Nunito",
+            "sans-serif"
+          ]
+        },
+        "fontSizes": {
+          "h1": "62px",
+          "h2": "42px",
+          "body": "14px"
+        }
+      },
+      "spacing": {
+        "baseUnit": 4,
+        "borderRadius": "10px"
+      },
+      "components": {
+        "input": {
+          "background": "#FFFFFF",
+          "textColor": "#000000",
+          "borderColor": null,
+          "borderRadius": "10px",
+          "borderRadiusCorners": {
+            "topLeft": "10px",
+            "topRight": "10px",
+            "bottomRight": "10px",
+            "bottomLeft": "10px"
+          },
+          "shadow": "none"
+        },
+        "buttonPrimary": {
+          "background": "#9354FF",
+          "textColor": "#FFFFFF",
+          "borderRadius": "34px",
+          "borderRadiusCorners": {
+            "topLeft": "34px",
+            "topRight": "34px",
+            "bottomRight": "34px",
+            "bottomLeft": "34px"
+          },
+          "shadow": "none"
+        },
+        "buttonSecondary": {
+          "background": "#AD7BE6",
+          "textColor": "#FFFFFF",
+          "borderRadius": "0px",
+          "borderRadiusCorners": {
+            "topLeft": "0px",
+            "topRight": "0px",
+            "bottomRight": "0px",
+            "bottomLeft": "0px"
+          },
+          "shadow": "none"
+        }
+      },
+      "images": {
+        "logo": "https://www.digitalnexa.com/hs-fs/hubfs/Nexa_logo.webp?width=180&height=40&name=Nexa_logo.webp",
+        "favicon": "https://www.digitalnexa.com/hubfs/Digital%20Nexa/Home/Logo/BRC_NEXA_DESIGN%20ELEMENTS_01%20copy-FAVI.png",
+        "ogImage": null,
+        "logoHref": "https://www.digitalnexa.com",
+        "logoAlt": "Nexa_logo"
+      },
+      "__llm_logo_reasoning": {
+        "selectedIndex": 0,
+        "reasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'NEXA'.",
+        "confidence": 0.95,
+        "source": "llm"
+      },
+      "__llm_button_reasoning": {
+        "primary": {
+          "index": 16,
+          "text": "View All",
+          "reasoning": "Button #0 uses the vibrant brand color #9354FF and has a clear call-to-action text 'View All', making it the primary CTA."
+        },
+        "secondary": {
+          "index": 10,
+          "text": "Request a Quote",
+          "reasoning": "Button #11 uses a different vibrant color #AD7BE6 and has action-oriented text 'Request a Quote', making it a suitable secondary CTA."
+        },
+        "confidence": 0.95
+      },
+      "personality": {
+        "tone": "professional",
+        "energy": "medium",
+        "targetAudience": "businesses seeking web design services in Dubai"
+      },
+      "designSystem": {
+        "framework": "custom",
+        "componentLibrary": ""
+      },
+      "confidence": {
+        "buttons": 0.95,
+        "colors": 0.9,
+        "overall": 0.925
+      },
+      "__llm_metadata": {
+        "logoSelection": {
+          "llmCalled": true,
+          "llmSucceeded": true,
+          "finalSource": "llm",
+          "rawLogoSelection": {
+            "selectedLogoIndex": 0,
+            "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'NEXA'.",
+            "confidence": 0.95
+          }
+        },
+        "buttonClassification": {
+          "llmCalled": true,
+          "llmSucceeded": true
+        }
+      },
+      "brandName": "NEXA",
+      "logo": "https://www.digitalnexa.com/hs-fs/hubfs/Nexa_logo.webp?width=180&height=40&name=Nexa_logo.webp"
+    },
+    "metadata": {
+      "title": "NEXA - Web Design Company In Dubai. Rated #1 for Website Design & Development In The UAE",
+      "twitter:title": "NEXA - Web Design Company In Dubai. Rated #1 for Website Design & Development In The UAE",
+      "og:description": "A leading Web Design Company in Dubai, we are also a Digital Marketing Agency that provides Social Media Services and Management, Content & Inbound Marketing and SEO (Search Engine Optimisation)",
+      "og:title": "NEXA - Web Design Company In Dubai. Rated #1 for Website Design & Development In The UAE",
+      "twitter:description": "A leading Web Design Company in Dubai, we are also a Digital Marketing Agency that provides Social Media Services and Management, Content & Inbound Marketing and SEO (Search Engine Optimisation)",
+      "google-site-verification": "46xk-PvvxsHCaIk8Gf0_UUM_6nhb8mVHgYADtROq6Kc",
+      "og:url": "https://www.digitalnexa.com",
+      "twitter:card": "summary",
+      "generator": "HubSpot",
+      "language": "en",
+      "facebook-domain-verification": "634sq74yd0k91ss9xj0txzqsnbgh5j",
+      "ogDescription": "A leading Web Design Company in Dubai, we are also a Digital Marketing Agency that provides Social Media Services and Management, Content & Inbound Marketing and SEO (Search Engine Optimisation)",
+      "viewport": "width=device-width, initial-scale=1",
+      "ogUrl": "https://www.digitalnexa.com",
+      "description": "A leading Web Design Company in Dubai, we are also a Digital Marketing Agency that provides Social Media Services and Management, Content & Inbound Marketing and SEO (Search Engine Optimisation)",
+      "ogTitle": "NEXA - Web Design Company In Dubai. Rated #1 for Website Design & Development In The UAE",
+      "favicon": "https://www.digitalnexa.com/hubfs/Digital%20Nexa/Home/Logo/BRC_NEXA_DESIGN%20ELEMENTS_01%20copy-FAVI.png",
+      "scrapeId": "01a03315-2d3f-7399-ad6c-f2ff96336317",
+      "sourceURL": "https://www.digitalnexa.com/",
+      "url": "https://www.digitalnexa.com/",
+      "statusCode": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "timezone": "America/New_York",
+      "proxyUsed": "basic",
+      "indexId": "7d0fe035-8a5e-4b1d-bfa2-31c1ac3345ec",
+      "creditsUsed": 1,
+      "concurrencyLimited": false
+    }
+  },
+  "scrape_id": "01a03315-2d3f-7399-ad6c-f2ff96336317",
+  "id": "i1DL1hueJwnUFbPA0w8C_",
+  "startedAt": "2026-08-24T09:23:40.239Z",
+  "endedAt": "2026-08-24T09:23:48.845Z",
+  "endpoint": "scrape",
+  "formState": {
+    "parseFile": null,
+    "parseFileMeta": null,
+    "extractSetupCompleted": false,
+    "urls": [],
+    "extractSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "company_mission": {
+          "type": "string"
+        },
+        "supports_sso": {
+          "type": "boolean"
+        },
+        "is_open_source": {
+          "type": "boolean"
+        },
+        "is_in_yc": {
+          "type": "boolean"
+        }
+      }
+    },
+    "extractPrompt": "Extract the company details, following the schema.",
+    "enableWebSearch": false,
+    "constrainUrls": false,
+    "options": {
+      "onlyMainContent": true,
+      "parsePDF": true,
+      "excludeTags": [],
+      "includeTags": [],
+      "waitFor": "",
+      "timeout": "",
+      "maxAge": "2 days",
+      "ignoreSitemap": false,
+      "crawlEntireDomain": false,
+      "sitemap": "include",
+      "limit": "10",
+      "maxDepth": "",
+      "excludePaths": [],
+      "includePaths": [],
+      "includeSubdomains": false,
+      "search": "",
+      "scrapeContentFromSearchResults": true,
+      "timeBasedSearch": "",
+      "location": "",
+      "includeDomains": [],
+      "excludeDomains": [],
+      "prompt": ""
+    },
+    "formats": [
+      "branding"
+    ],
+    "sources": [
+      "web"
+    ],
+    "categories": [],
+    "jsonSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "company_name": {
+          "type": "string"
+        },
+        "company_description": {
+          "type": "string"
+        }
+      }
+    },
+    "jsonPrompt": "",
+    "questionPrompt": "",
+    "highlightsQuery": "",
+    "agent": {},
+    "url": "www.digitalnexa.com/",
+    "endpoint": "scrape"
+  },
+  "status": "success",
+  "version": "IQ7pe-oyzqIe1I68X529e",
+  "isPreview": false
+}

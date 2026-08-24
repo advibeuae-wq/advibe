@@ -1,0 +1,85 @@
+/* Advibe Agency — Design tokens
+   Source of truth: /brand/guidelines.md — change values here, not in styles.css */
+
+:root {
+  /* Foundation */
+  --bg: #0A0A0A;
+  --bg-elevated: #141414;
+  --bg-elevated-2: #1C1C1C;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  /* Text */
+  --text: #F2EFEA;
+  --text-muted: #A8A29A;
+  --text-faint: #6B6660;
+
+  /* Gold — primary accent */
+  --gold-300: #F0CE84;
+  --gold-400: #DDAE5C;
+  --gold-600: #B0813A;
+  --gold-gradient: linear-gradient(90deg, #B0813A 0%, #F0CE84 100%);
+
+  /* Violet — secondary accent */
+  --violet-400: #9B7CF0;
+  --violet-600: #5A34B8;
+  --violet-glow: rgba(139, 92, 246, 0.25);
+
+  /* Semantic */
+  --positive: var(--gold-400);
+  --negative: #E8998C;
+
+  /* Type families */
+  --font-display: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Nunito Sans", "Segoe UI", sans-serif;
+  --font-data: "JetBrains Mono", "SF Mono", Consolas, monospace;
+
+  /* Type scale — desktop */
+  --fs-display: 64px;
+  --fs-h2: 42px;
+  --fs-h3: 24px;
+  --fs-body-lg: 18px;
+  --fs-body: 16px;
+  --fs-caption: 12px;
+  --fs-data-lg: 40px;
+  --fs-data: 20px;
+
+  /* Spacing (8px base) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 16px;
+  --sp-4: 24px;
+  --sp-5: 32px;
+  --sp-6: 48px;
+  --sp-7: 64px;
+  --sp-8: 96px;
+  --sp-9: 120px;
+  --sp-10: 160px;
+
+  --section-padding: var(--sp-9);
+  --gutter: var(--sp-4);
+  --content-max: 1280px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 180ms;
+  --dur-reveal: 450ms;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --fs-display: 40px;
+    --fs-h2: 32px;
+    --fs-h3: 22px;
+    --fs-body-lg: 17px;
+    --fs-data-lg: 32px;
+    --fs-data: 18px;
+    --section-padding: var(--sp-7);
+  }
+}

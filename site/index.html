@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advibe Agency — Google Ads &amp; Meta Ads Agency in Dubai</title>
+<meta name="description" content="Advibe Agency is the performance marketing agency Dubai businesses call when their ad budget isn't working. Google Ads, Meta Ads, and PPC that drives measurable growth.">
+<meta property="og:title" content="Advibe Agency — Google Ads &amp; Meta Ads Agency in Dubai">
+<meta property="og:description" content="Performance marketing and PPC that drives real, measurable growth for Dubai & UAE businesses.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/og-image-base.png">
+<link rel="icon" type="image/png" href="images/favicon-32.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/case-study.css">
+<link rel="stylesheet" href="css/tubes-cursor.css">
+</head>
+<body>
+
+<!-- Site-wide TubesCursor background — see js/tubes-cursor.js and css/tubes-cursor.css.
+     Fixed, negative z-index, pointer-events:none: never intercepts clicks or
+     tab order, just paints behind everything else on the page. -->
+<div id="tubes-cursor-viewport" aria-hidden="true">
+  <canvas id="tubes-cursor-canvas"></canvas>
+</div>
+<div id="tubes-cursor-scrim" aria-hidden="true"></div>
+
+<a href="#main" class="visually-hidden-focusable" style="position:absolute;left:-9999px;top:0;background:var(--gold-400);color:#201200;padding:12px 20px;z-index:200;border-radius:8px;">Skip to content</a>
+
+<header class="site-header">
+  <div class="container">
+    <a href="#" class="logo" aria-label="Advibe Agency home">
+      <img src="images/advibe-logo.png" alt="Advibe Agency">
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#why-advibe">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="tel:+971501390421" class="btn btn-secondary btn-header-secondary">Book Demo</a>
+      <a href="#contact" class="btn btn-primary">Get Started</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#why-advibe">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="btn btn-primary">Get Started</a>
+</nav>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <img src="images/hero-dubai.jpg" alt="">
+    </div>
+    <div class="container">
+      <div class="hero-copy">
+        <div class="hero-badge reveal">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 21 12 17.77 6.2 21l1.3-7.35L3 9.27l6.1-1.01L12 2z"/></svg>
+          Advibe Agency FZ-LLC · Serving Dubai &amp; the UAE
+        </div>
+        <h1 class="reveal">The best digital marketing agency Dubai businesses call when their <span class="accent">marketing budget isn't working</span>.</h1>
+        <p class="lede reveal">We specialize in performance marketing and PPC that drives real, measurable growth. Stop guessing where your ad spend is going and start seeing returns.</p>
+        <div class="hero-ctas reveal">
+          <a href="#contact" class="btn btn-primary">Book a Free Consultation</a>
+          <a href="#results" class="btn btn-secondary">See Our Results →</a>
+        </div>
+        <p class="hero-proof reveal"><span class="stars" aria-hidden="true">★★★★★</span> Rated by small and mid-sized businesses across Dubai and the UAE</p>
+      </div>
+
+      <div class="hero-cards">
+
+      <div class="pulse-video-card reveal" role="img" aria-label="Campaign Pulse readout animating from an underperforming baseline to a 4.8x ROAS, AED 86 cost per acquisition, and 6.2% click-through rate after Advibe's optimization">
+        <video
+          id="pulse-video"
+          class="pulse-video"
+          muted
+          playsinline
+          preload="auto"
+          poster="videos/campaign-pulse-poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="videos/campaign-pulse-scrub.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="trust-card glass-card reveal">
+        <h3 class="trust-card-label">Platforms we manage campaigns on</h3>
+        <div class="marquee-mask">
+          <div class="marquee-track">
+            <span class="platform-chip"><span class="platform-dot gold" aria-hidden="true"></span>Google Ads</span>
+            <span class="platform-chip"><span class="platform-dot violet" aria-hidden="true"></span>Meta Ads</span>
+            <span class="platform-chip"><span class="platform-dot gold" aria-hidden="true"></span>Google Analytics</span>
+            <span class="platform-chip"><span class="platform-dot violet" aria-hidden="true"></span>LinkedIn Ads</span>
+            <span class="platform-chip"><span class="platform-dot gold" aria-hidden="true"></span>TikTok Ads</span>
+            <span class="platform-chip"><span class="platform-dot violet" aria-hidden="true"></span>Google Tag Manager</span>
+            <span class="platform-chip" aria-hidden="true"><span class="platform-dot gold"></span>Google Ads</span>
+            <span class="platform-chip" aria-hidden="true"><span class="platform-dot violet"></span>Meta Ads</span>
+            <span class="platform-chip" aria-hidden="true"><span class="platform-dot gold"></span>Google Analytics</span>
+            <span class="platform-chip" aria-hidden="true"><span class="platform-dot violet"></span>LinkedIn Ads</span>
+            <span class="platform-chip" aria-hidden="true"><span class="platform-dot gold"></span>TikTok Ads</span>
+            <span class="platform-chip" aria-hidden="true"><span class="platform-dot violet"></span>Google Tag Manager</span>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands we've worked with -->
+  <section class="brands-section section-border-top" data-tubes-opacity="0.55">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Brands we've worked with</span>
+        <h2>Brands we've helped grow</h2>
+        <p>Real UAE businesses who put their ad spend in our hands — and got the number going up.</p>
+      </div>
+    </div>
+
+    <div class="brands-marquee-mask reveal">
+      <div class="brands-marquee-track">
+        <div class="brand-tile"><img src="images/brands/logo-01.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-02.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-03.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-04.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-05.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-06.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-07.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile"><img src="images/brands/logo-08.svg" alt="" loading="lazy"></div>
+        <!-- duplicate set, aria-hidden — makes the 50%-translate loop seamless -->
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-01.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-02.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-03.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-04.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-05.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-06.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-07.svg" alt="" loading="lazy"></div>
+        <div class="brand-tile" aria-hidden="true"><img src="images/brands/logo-08.svg" alt="" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem -->
+  <section class="section-border-top" data-tubes-opacity="0.68">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Does this sound familiar?</span>
+        <h2>The three walls of stagnation</h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card reveal">
+          <span class="num">01</span>
+          <h3>Poor online visibility</h3>
+          <p>Your ideal customers can't find you when they're ready to buy, losing ground to competitors.</p>
+        </div>
+        <div class="problem-card reveal">
+          <span class="num">02</span>
+          <h3>Low social engagement</h3>
+          <p>You're posting content, but it's not translating into meaningful conversations or leads.</p>
+        </div>
+        <div class="problem-card reveal">
+          <span class="num">03</span>
+          <h3>Uncertain ad spend ROI</h3>
+          <p>You're spending money on ads but have no clear picture of what's actually working.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="bg-panel" data-tubes-opacity="0.85">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we do</span>
+        <h2>Performance marketing services</h2>
+        <p>As a full-service performance marketing agency in Dubai, we handle the parts of your marketing that are actually costing you money right now.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-gold">
+            <img src="images/services/google-ads.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">01 / 12</span>
+            <div><h3>Google Ads</h3><p>Search, Shopping, Display &amp; YouTube campaigns built around high-intent keywords.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-gold">
+            <img src="images/services/meta-ads.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">02 / 12</span>
+            <div><h3>Meta Ads</h3><p>Facebook &amp; Instagram campaigns engineered for conversions, not vanity metrics.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-gold">
+            <img src="images/services/tiktok-ads.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">03 / 12</span>
+            <div><h3>TikTok Ads</h3><p>Short-form creative and spark ads that reach a younger, fast-moving UAE audience.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-violet">
+            <img src="images/services/linkedin-ads.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">04 / 12</span>
+            <div><h3>LinkedIn Ads</h3><p>B2B lead generation for firms selling into corporates and government.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-violet">
+            <img src="images/services/seo.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">05 / 12</span>
+            <div><h3>SEO</h3><p>Technical, on-page, and content SEO to win organic search traffic long-term.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-violet">
+            <img src="images/services/social-media.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">06 / 12</span>
+            <div><h3>Social Media Management</h3><p>Consistent posting and community management that supports the paid engine.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-gold">
+            <img src="images/services/branding.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">07 / 12</span>
+            <div><h3>Branding &amp; Identity</h3><p>Logo systems, brand guidelines, and visual identity that make you instantly recognizable.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-gold">
+            <img src="images/services/web-design.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">08 / 12</span>
+            <div><h3>Web Design &amp; Development</h3><p>Fast, conversion-ready websites built to turn traffic into leads.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-gold">
+            <img src="images/services/landing-page.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">09 / 12</span>
+            <div><h3>Landing Page Design &amp; CRO</h3><p>Purpose-built pages, tested and refined to lower your cost per lead.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-violet">
+            <img src="images/services/analytics.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">10 / 12</span>
+            <div><h3>Analytics &amp; Tracking Setup</h3><p>Clean conversion tracking so every dirham of spend is accounted for.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-violet">
+            <img src="images/services/content-creative.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">11 / 12</span>
+            <div><h3>Content &amp; Creative Production</h3><p>Ad creative, photography, and video built to stop the scroll.</p></div>
+          </div>
+        </div>
+        <div class="service-tile reveal">
+          <div class="tile-visual glow-violet">
+            <img src="images/services/email-sms.jpg" alt="" loading="lazy">
+          </div>
+          <div class="tile-body">
+            <span class="index">12 / 12</span>
+            <div><h3>Email &amp; SMS Marketing</h3><p>Retention flows that turn one-time buyers into repeat customers.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="services-cta">
+        <a href="#contact" class="link-arrow">Talk to us about your account →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Advibe -->
+  <section id="why-advibe" class="bg-panel" data-tubes-opacity="0.85">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Why Advibe</span>
+        <h2>Why small businesses choose Advibe as their marketing partner in Dubai</h2>
+      </div>
+
+      <div class="bento">
+        <div class="bento-card bento-strategy reveal">
+          <div class="icon-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 9-9"/><path d="M14 7h7v7"/></svg>
+            <h3>Data-driven strategy</h3>
+          </div>
+          <p>We rely on hard data, not guesswork, to allocate your budget where it generates the highest return on investment.</p>
+          <svg class="mini-sparkline" viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,54 L40,46 L80,50 L120,32 L160,38 L200,20 L240,26 L300,8" fill="none" stroke="var(--gold-400)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="bento-pair">
+          <div class="bento-card reveal">
+            <div class="icon-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4V5z"/></svg>
+              <h3>Client-focused communication</h3>
+            </div>
+            <p>Transparent reporting and regular check-ins ensure you always know exactly how your campaigns are performing.</p>
+          </div>
+          <div class="bento-card reveal">
+            <div class="icon-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+              <h3>Continuous optimization</h3>
+            </div>
+            <p>We don't set and forget. We constantly tweak and refine campaigns to maximize efficiency and scale results.</p>
+          </div>
+        </div>
+
+        <div class="bento-card bento-experience reveal">
+          <div>
+            <div class="icon-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+              <h3>10+ years of experience</h3>
+            </div>
+            <p>Our team has over a decade of hands-on experience navigating the complex landscape of digital advertising in the UAE.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results: Before Advibe / After Advibe (Healthcare client, Google Ads) -->
+  <section id="results" class="section-border-top" data-tubes-opacity="0.82">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Case study · Google Ads</span>
+        <h2>Healthcare client · UAE · Google Ads</h2>
+        <p>
+          By auditing their existing account and redirecting wasted spend into high-intent keywords, we achieved massive efficiency gains.
+          <span class="case-study-result-line">+137.5% sales growth</span>, on roughly half the monthly ad spend.
+        </p>
+        <div class="case-study-meta">
+          <span>Industry: Healthcare</span>
+          <span class="dot">·</span>
+          <span>Platform: Google Ads</span>
+          <span class="dot">·</span>
+          <span>Engagement: Account audit &amp; rebuild</span>
+        </div>
+      </div>
+
+      <div class="compare-toggle-row reveal">
+        <div class="compare-toggle" role="tablist" aria-label="Before Advibe and after Advibe comparison">
+          <button type="button" id="compare-tab-before" class="active" role="tab" aria-selected="true" aria-controls="compare-panel-before">Before Advibe</button>
+          <button type="button" id="compare-tab-after" role="tab" aria-selected="false" aria-controls="compare-panel-after">After Advibe</button>
+        </div>
+      </div>
+
+      <div class="compare-panels reveal">
+        <!-- BEFORE: plain, dated, un-optimized account -->
+        <div class="compare-panel active" id="compare-panel-before" role="tabpanel" aria-labelledby="compare-tab-before">
+          <div class="compare-panel-label is-before"><span class="swatch"></span> Before Advibe</div>
+          <div class="before-report">
+            <div class="before-report-bar">
+              <span class="before-report-dots"><span></span><span></span><span></span></span>
+              <span class="before-report-title">Monthly Ad Report.xlsx</span>
+            </div>
+            <dl class="before-report-list">
+              <div class="before-report-row"><dt>Monthly ad spend</dt><dd>AED 45,000</dd></div>
+              <div class="before-report-row"><dt>Keyword targeting</dt><dd>Broad match, unoptimized</dd></div>
+              <div class="before-report-row"><dt>Conversion tracking</dt><dd>Not configured</dd></div>
+              <div class="before-report-row"><dt>Reporting</dt><dd>Manual spreadsheet, ad-hoc</dd></div>
+            </dl>
+            <div class="before-report-foot">Spending steadily. No clear picture of what's actually working.</div>
+          </div>
+        </div>
+
+        <!-- AFTER: real results, same data as the headline stat above -->
+        <div class="compare-panel" id="compare-panel-after" role="tabpanel" aria-labelledby="compare-tab-after">
+          <div class="compare-panel-label is-after"><span class="swatch"></span> After Advibe</div>
+          <div class="results-panel">
+            <div class="results-bars">
+              <div class="bar-row">
+                <span class="bar-label">Spend before</span>
+                <div class="bar-track"><div class="bar-fill before" data-width="100%"></div></div>
+                <span class="bar-value data">AED 45,000</span>
+              </div>
+              <div class="bar-row">
+                <span class="bar-label">Spend after</span>
+                <div class="bar-track"><div class="bar-fill after" data-width="38%"></div></div>
+                <span class="bar-value data">AED 10K–20K</span>
+              </div>
+            </div>
+            <div class="results-headline">
+              <span class="big-stat data" data-count-to="137.5" data-decimals="0" data-prefix="+" data-suffix="%">+0%</span>
+              <p>Sales growth, on roughly half the monthly ad spend</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What we changed -->
+      <div class="changed-grid">
+        <div class="changed-card reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <p><strong>Audited the existing Google Ads account</strong> to find exactly where the AED 45,000 monthly spend was being wasted.</p>
+        </div>
+        <div class="changed-card reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5"/></svg>
+          <p><strong>Redirected budget into high-intent keywords</strong>, cutting the broad, unfocused targeting that was burning spend with no return.</p>
+        </div>
+        <div class="changed-card reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l3 12h10l3-12"/><path d="M9 19v-8M15 19v-8"/></svg>
+          <p><strong>Cut monthly spend from AED 45,000 to AED 10,000–20,000</strong> — roughly half — by fixing the account instead of just spending more.</p>
+        </div>
+        <div class="changed-card reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+          <p><strong>Grew sales +137.5%</strong> despite the lower spend — efficiency, not just cost-cutting.</p>
+        </div>
+      </div>
+
+      <div class="case-study-cta reveal">
+        <p>Want results like this for your ad account?</p>
+        <a href="#contact" class="btn btn-primary">Book a Free Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="bg-panel" style="text-align:center;" data-tubes-opacity="0.75">
+    <div class="container">
+      <span class="eyebrow">Our methodology</span>
+      <h2 style="font-size:var(--fs-h2);">The Advibe process</h2>
+      <div class="process-grid">
+        <div class="process-card reveal">
+          <span class="step-num">01</span>
+          <h3>Understand</h3>
+          <p>We deep dive into your business model, current campaigns, and target audience to identify the leaks in your funnel.</p>
+        </div>
+        <div class="process-card reveal">
+          <span class="step-num">02</span>
+          <h3>Build &amp; launch</h3>
+          <p>We construct highly targeted, conversion-optimized campaigns designed specifically for your ideal customer profile.</p>
+        </div>
+        <div class="process-card reveal">
+          <span class="step-num">03</span>
+          <h3>Optimize for ROI</h3>
+          <p>Continuous monitoring and A/B testing to lower acquisition costs and scale what works.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-border-top" data-tubes-opacity="0.88">
+    <div class="container">
+      <div class="section-head reveal" style="margin-bottom:var(--sp-7);">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            How quickly can we see results?
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer"><p>While PPC can drive immediate traffic, true optimization and consistent ROI usually take 2–3 months of data gathering and refinement.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Do you handle the ad creative?
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer"><p>Yes, our team handles ad copywriting and basic creative optimization, though we collaborate closely with you on brand voice.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            What happens if a campaign underperforms?
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer"><p>We pause it immediately. We monitor campaigns daily to ensure budget isn't wasted on poorly performing ads.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section id="contact" class="final-cta section-border-top bg-panel" data-tubes-opacity="0.6">
+    <div class="container">
+      <h2 class="reveal">Let's grow together.</h2>
+      <p class="lede reveal">Book your free consultation and get a clear look at where your ad budget is leaking — and what fixing it would actually be worth.</p>
+      <a href="mailto:connect@advibeagency.me" class="btn btn-primary reveal">Book a Free Consultation</a>
+      <p class="fineprint reveal">No obligation. No generic audit template — we look at your actual account.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-card">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="images/advibe-logo.png" alt="Advibe Agency">
+          <p>We build campaigns that convert, sites that perform, and results you can actually measure.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Advibe Agency on Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8h2V5h-2a4 4 0 0 0-4 4v2H9v3h2v7h3v-7h2.5l.5-3H14V9a1 1 0 0 1 1-1z"/></svg>
+            </a>
+            <a href="#" aria-label="Advibe Agency on Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><circle cx="16.2" cy="7.8" r="0.6" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" aria-label="Advibe Agency on TikTok">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M13 3a5.5 5.5 0 0 0 5 5"/></svg>
+            </a>
+            <a href="#" aria-label="Advibe Agency on LinkedIn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="5" r="1.6"/><path d="M11 20v-8M11 12.5a3 3 0 0 1 6 0V20"/></svg>
+            </a>
+            <a href="#" aria-label="Advibe Agency reviews on Google">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5 5.5.6-4.1 3.7 1.2 5.4L12 15.5l-4.9 2.7 1.2-5.4-4.1-3.7 5.5-.6z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <nav class="footer-col" aria-label="Quick links">
+          <h3>Quick Links</h3>
+          <a href="#">Home</a>
+          <a href="#why-advibe">About</a>
+          <a href="#services">Services</a>
+          <a href="#results">Results</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <nav class="footer-col" aria-label="Services">
+          <h3>Services</h3>
+          <a href="#services">Google Ads</a>
+          <a href="#services">Meta Ads</a>
+          <a href="#services">SEO</a>
+          <a href="#services">Web Design &amp; Development</a>
+          <a href="#services">Branding &amp; Identity</a>
+        </nav>
+
+        <div class="footer-col footer-contact-col">
+          <h3>Studio &amp; Contact</h3>
+          <span class="footer-eyebrow">Advibe Agency FZ-LLC</span>
+          <address>VUET1006 Compass Building, Ras Al Khaimah, UAE</address>
+          <a href="tel:+971501390421">+971 50 139 0421</a>
+          <a href="mailto:connect@advibeagency.me">connect@advibeagency.me</a>
+          <a href="#contact" class="btn btn-primary">Get Started</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© <span data-current-year>2026</span> Advibe Agency FZ-LLC. All rights reserved.</p>
+        <p class="footer-quote">"Stop guessing. Start measuring."</p>
+        <nav class="footer-legal" aria-label="Legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="js/tubes-cursor.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
