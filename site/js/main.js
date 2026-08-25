@@ -205,4 +205,104 @@
   /* ---------- Footer year ---------- */
   const yearEl = document.querySelector("[data-current-year]");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ---------- Consultation modal ---------- */
+  const modal = document.getElementById("consultation-modal");
+  if (modal) {
+    const openTriggers = document.querySelectorAll('[data-open-modal="consultation"]');
+    const closeBtn = modal.querySelector(".modal-close");
+    const card = modal.querySelector(".modal-card");
+    const modalBody = modal.querySelector(".modal-body");
+    const successEl = modal.querySelector(".modal-success");
+    const form = modal.querySelector("#consultation-form");
+    const errorEl = modal.querySelector(".form-error");
+    const submitBtn = form.querySelector(".form-submit");
+    const submitLabel = submitBtn.querySelector(".btn-label");
+    let lastFocused = null;
+
+    const openModal = (event) => {
+      if (event) event.preventDefault();
+      lastFocused = document.activeElement;
+      modalBody.hidden = false;
+      successEl.hidden = true;
+      errorEl.hidden = true;
+      form.reset();
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      const firstField = form.querySelector("input, textarea");
+      const focusFirstField = () => { if (firstField) firstField.focus(); };
+      // The browser focuses the clicked trigger as part of its own default
+      // handling for the click, which can land after this listener returns
+      // and steal focus back — a fixed delay can't reliably outrun it. The
+      // card's open transition is guaranteed to finish after that settles,
+      // so move focus there instead of racing it.
+      card.addEventListener("transitionend", function onOpened(e) {
+        if (e.target !== card || e.propertyName !== "transform") return;
+        card.removeEventListener("transitionend", onOpened);
+        focusFirstField();
+      });
+      focusFirstField();
+    };
+
+    const closeModal = () => {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocused) lastFocused.focus();
+    };
+
+    openTriggers.forEach((trigger) => trigger.addEventListener("click", openModal));
+    closeBtn.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!modal.classList.contains("open")) return;
+      if (event.key === "Escape") {
+        closeModal();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(
+        modal.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])')
+      ).filter((el) => el.offsetParent !== null);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorEl.hidden = true;
+      submitBtn.disabled = true;
+      submitLabel.textContent = "Sending…";
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) throw new Error("Formspree request failed");
+        modalBody.hidden = true;
+        successEl.hidden = false;
+        successEl.focus?.();
+      } catch (err) {
+        errorEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitLabel.textContent = "Send message";
+      }
+    });
+  }
 })();
