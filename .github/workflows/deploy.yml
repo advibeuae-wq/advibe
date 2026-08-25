@@ -24,6 +24,12 @@ jobs:
           # Confirmed in cPanel File Manager: this FTP account's landing directory
           # is /public_html/.
           server-dir: /public_html/
+          # 2026-08-25: the previous state file (.ftp-deploy-sync-state.json) got
+          # written as if a deploy succeeded when the real file upload silently
+          # didn't land — every run since then trusted that stale record and
+          # skipped re-uploading. Renaming forces one full fresh re-sync of the
+          # files this workflow manages (nothing outside that set is touched).
+          state-name: .ftp-deploy-sync-state-v2.json
           exclude: |
             **/.git*
             **/.git*/**
