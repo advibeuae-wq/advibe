@@ -21,19 +21,23 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./site/
-          # 2026-08-25: advibeagency.me is an addon domain on this hosting
-          # account, so its real document root is the subfolder below — NOT
-          # /public_html/ itself (that's the account's primary/default
-          # docroot, a different, unrelated site). Every prior run of this
-          # workflow deployed to the wrong directory as a result; confirmed
-          # via cPanel > Domains that this is the correct document root.
-          server-dir: /public_html/advibeagency.me/
+          # 2026-08-25: /public_html/advibeagency.me/ (confirmed via cPanel
+          # File Manager as the real docroot for the addon domain) STILL
+          # didn't work — the FTP_USERNAME account is very likely already
+          # chrooted/jailed to that exact directory on login (a common
+          # Namecheap/cPanel setup for a domain-scoped FTP account), so
+          # requesting that same absolute path again from inside the jail
+          # nests it one level too deep instead of landing at the jail root.
+          # "/" (this account's own landing directory) should BE that
+          # docroot. If this still isn't visible after a run, the account is
+          # not scoped the way this comment assumes and needs re-checking.
+          server-dir: /
           # 2026-08-25: the previous state file (.ftp-deploy-sync-state.json) got
           # written as if a deploy succeeded when the real file upload silently
           # didn't land — every run since then trusted that stale record and
           # skipped re-uploading. Renaming forces one full fresh re-sync of the
           # files this workflow manages (nothing outside that set is touched).
-          state-name: .ftp-deploy-sync-state-v2.json
+          state-name: .ftp-deploy-sync-state-v3.json
           exclude: |
             **/.git*
             **/.git*/**
