@@ -119,3 +119,35 @@
   color: var(--text-faint);
 }
 .ig-phone-caption { font-size: 13px; color: var(--text-faint); }
+
+/* ---------- Portfolio tile placeholders ----------
+   Square "project preview" cards for pages that want a work-sample
+   grid before real client assets exist. To swap in a real result,
+   replace the tile's contents with an <img> (object-fit: cover fills
+   the existing aspect-ratio/radius) and drop the is-placeholder class. */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+}
+@media (min-width: 640px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.portfolio-tile {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+}
+.portfolio-tile.is-placeholder {
+  background: var(--bg-elevated);
+  border: 1px dashed var(--border-strong);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  text-align: center;
+}
+.portfolio-tile.is-placeholder svg { width: 26px; height: 26px; color: var(--gold-400); }
+.portfolio-tile.is-placeholder h3 { font-size: 15px; margin: 0; }
+.portfolio-tile.is-placeholder span { font-size: 12px; color: var(--text-faint); }
