@@ -21,9 +21,13 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./site/
-          # Confirmed in cPanel File Manager: this FTP account's landing directory
-          # is /public_html/.
-          server-dir: /public_html/
+          # 2026-08-25: advibeagency.me is an addon domain on this hosting
+          # account, so its real document root is the subfolder below — NOT
+          # /public_html/ itself (that's the account's primary/default
+          # docroot, a different, unrelated site). Every prior run of this
+          # workflow deployed to the wrong directory as a result; confirmed
+          # via cPanel > Domains that this is the correct document root.
+          server-dir: /public_html/advibeagency.me/
           # 2026-08-25: the previous state file (.ftp-deploy-sync-state.json) got
           # written as if a deploy succeeded when the real file upload silently
           # didn't land — every run since then trusted that stale record and
