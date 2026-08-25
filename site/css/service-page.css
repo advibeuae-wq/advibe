@@ -1,0 +1,54 @@
+/* Advibe Agency — Service detail pages (google-ads.html, meta-ads.html,
+   seo.html, …). Shared layout for the hero CTA, the "what's included"
+   grid, and the condensed proof-point stats. These pages also pull in
+   case-study.css for the results-panel/changed-grid/case-study-cta
+   pieces reused from the homepage case study. */
+
+/* ---------- Hero CTA button ---------- */
+.page-hero .btn { margin-top: var(--sp-6); }
+
+/* ---------- What's included ---------- */
+.included-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+}
+@media (min-width: 640px) { .included-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) {
+  .included-grid { grid-template-columns: repeat(3, 1fr); }
+  /* When the count leaves exactly one card alone in the last row
+     (e.g. 7 items), center it under the middle column instead of
+     stranding it on the left with two empty cells beside it. */
+  .included-grid > .value-card:last-child:nth-child(3n+1) { grid-column: 2; }
+}
+
+/* ---------- Process: 4-step variant ----------
+   process-grid defaults to 3 columns at 800px (styles.css); a 4-step
+   process reads better at 2-up on tablet, 4-up on wide desktop. */
+@media (min-width: 800px) { .process-grid.is-4up { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .process-grid.is-4up { grid-template-columns: repeat(4, 1fr); } }
+
+/* ---------- Proof section: two stats side by side ----------
+   Same visual language as .results-headline .big-stat, laid out as a
+   pair instead of one centered figure. */
+.proof-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-6);
+  max-width: 620px;
+  margin: 0 auto;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+@media (min-width: 560px) { .proof-stats { grid-template-columns: repeat(2, 1fr); } }
+.proof-stat .big-stat {
+  font-family: var(--font-data);
+  font-size: var(--fs-data-lg);
+  font-weight: 700;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.proof-stat p { color: var(--text-muted); margin-top: var(--sp-1); font-size: 14px; }
