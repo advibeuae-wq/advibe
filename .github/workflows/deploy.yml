@@ -21,17 +21,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./site/
-          # 2026-08-25: /public_html/advibeagency.me/ (confirmed via cPanel
-          # File Manager as the real docroot for the addon domain) STILL
-          # didn't work — the FTP_USERNAME account is very likely already
-          # chrooted/jailed to that exact directory on login (a common
-          # Namecheap/cPanel setup for a domain-scoped FTP account), so
-          # requesting that same absolute path again from inside the jail
-          # nests it one level too deep instead of landing at the jail root.
-          # "/" (this account's own landing directory) should BE that
-          # docroot. If this still isn't visible after a run, the account is
-          # not scoped the way this comment assumes and needs re-checking.
-          server-dir: /
+          server-dir: /public_html/
           # 2026-08-25: the previous state file (.ftp-deploy-sync-state.json) got
           # written as if a deploy succeeded when the real file upload silently
           # didn't land — every run since then trusted that stale record and

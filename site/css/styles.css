@@ -829,6 +829,7 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
 
 /* ---------- About page: large hero image ---------- */
 .hero-image-frame {
+  position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
@@ -836,8 +837,18 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
   aspect-ratio: 16 / 7;
 }
 .hero-image-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block; }
+/* Grounds the photo in the copy above it instead of leaving it purely
+   decorative — a scrim for legibility plus the HQ chip it's carrying. */
+.hero-image-frame::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(10, 10, 10, 0.75) 0%, transparent 32%);
+  pointer-events: none;
+}
+.hero-image-caption { position: absolute; left: var(--sp-5); bottom: var(--sp-5); z-index: 1; }
 @media (max-width: 640px) {
   .hero-image-frame { aspect-ratio: 4 / 5; }
+  .hero-image-caption { left: var(--sp-4); bottom: var(--sp-4); }
 }
 
 /* ---------- About page: "What drives us" value cards ---------- */
@@ -891,49 +902,113 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
 .badge-card span { font-family: var(--font-display); font-weight: 700; font-size: 15px; }
 
 /* ---------- About page: founder ---------- */
-.founder-block { max-width: 640px; margin: 0 auto; text-align: center; }
-.founder-photo {
-  width: 176px;
-  height: 176px;
-  margin: 0 auto var(--sp-5);
-  border-radius: 50%;
-  padding: 4px;
-  background: var(--gold-gradient);
-}
-.founder-photo img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--bg);
-}
-.founder-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-top: var(--sp-2); }
-.founder-title { color: var(--gold-400); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: var(--sp-1); margin-bottom: var(--sp-5); }
-.founder-block h2 { font-size: var(--fs-h2); margin-top: var(--sp-4); }
-.founder-block .lede { color: var(--text-muted); font-size: var(--fs-body-lg); margin-top: var(--sp-4); }
+.founder-intro { max-width: 640px; margin: 0 auto; text-align: center; }
 
-.founder-note {
-  max-width: 640px;
-  margin: var(--sp-8) auto 0;
-  background: var(--bg-elevated);
+.founder-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-7);
+  align-items: start;
+  margin-top: var(--sp-8);
+}
+@media (min-width: 860px) {
+  .founder-grid { grid-template-columns: 320px 1fr; gap: var(--sp-9); }
+}
+
+/* Profile card — the real photo, background removed and set into a
+   dashboard-style tile (see .tile-visual) instead of floating on its
+   original flat studio backdrop. */
+.founder-card {
+  position: relative;
+  background: var(--bg-elevated-2);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--gold-400);
-  border-radius: var(--radius-md);
-  padding: var(--sp-6);
-  text-align: left;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
-.founder-note h3 {
-  font-family: var(--font-body);
-  font-size: var(--fs-caption);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: var(--sp-4);
+.founder-card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gold-gradient);
+  z-index: 2;
 }
-.founder-note p { color: var(--text-muted); margin-bottom: var(--sp-4); }
-.founder-note p:last-child { margin-bottom: 0; color: var(--text); font-weight: 600; }
+.founder-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
+.founder-portrait::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 15%, var(--violet-glow) 0%, transparent 60%);
+}
+.founder-portrait img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: center 12%; }
+.founder-portrait::after {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 1;
+  background: linear-gradient(0deg, var(--bg-elevated-2) 2%, transparent 34%);
+  pointer-events: none;
+}
+.founder-card-body { padding: var(--sp-5); }
+.founder-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+.founder-title { color: var(--gold-400); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: var(--sp-1); }
+.founder-contact-row { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-4); padding-top: var(--sp-4); border-top: 1px solid var(--border); font-size: 14px; }
+.founder-contact-row a { color: var(--text-muted); transition: color var(--dur-micro) var(--ease-out); }
+.founder-contact-row a:hover { color: var(--gold-400); }
+
+/* Growth timeline — the founder's own path to Advibe, told as an ascending
+   sequence rather than a pull-quote. Order carries real information here
+   (it's an actual chronology), and the line running gold at its endpoint
+   echoes the arrow built into the "i" of the wordmark — brand/guidelines.md §1. */
+.growth-timeline > .eyebrow { margin-bottom: var(--sp-5); }
+.timeline-list { position: relative; list-style: none; margin: 0; padding: 0; }
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--violet-400) 0%, var(--gold-400) 100%);
+  opacity: 0.5;
+}
+.timeline-step { position: relative; padding-left: var(--sp-7); padding-bottom: var(--sp-6); }
+.timeline-step:last-child { padding-bottom: 0; }
+.timeline-marker {
+  position: absolute;
+  left: 4px; top: 4px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--violet-400);
+}
+.timeline-step:nth-child(2) .timeline-marker { border-color: var(--gold-600); }
+.timeline-step:nth-child(3) .timeline-marker { border-color: var(--gold-400); }
+.timeline-marker.is-final {
+  width: 28px; height: 28px;
+  left: -2px; top: -2px;
+  background: var(--gold-gradient);
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  color: #201200;
+  box-shadow: 0 0 0 4px var(--bg-elevated), 0 0 20px rgba(221, 174, 92, 0.4);
+}
+.timeline-marker.is-final svg { width: 15px; height: 15px; }
+.timeline-step h3 { font-size: 17px; margin-bottom: var(--sp-1); }
+.timeline-step p { color: var(--text-muted); }
+.timeline-step-final h3 { color: var(--gold-300); }
+.timeline-step:nth-child(1) { transition-delay: 0ms; }
+.timeline-step:nth-child(2) { transition-delay: 90ms; }
+.timeline-step:nth-child(3) { transition-delay: 180ms; }
+.timeline-step:nth-child(4) { transition-delay: 270ms; }
+
+.timeline-closer {
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+}
 
 /* ---------- About page: CTA contact row ---------- */
 .cta-contact-row { display: flex; align-items: center; justify-content: center; gap: var(--sp-3); margin-top: var(--sp-5); color: var(--text-muted); font-size: 14px; }
