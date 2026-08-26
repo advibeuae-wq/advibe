@@ -21,7 +21,14 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./site/
-          server-dir: /public_html/
+          # 2026-08-26: proved with a uniquely-named marker file (checked
+          # directly over HTTP) that /public_html/ is NOT what LiteSpeed
+          # serves for advibeagency.me — the Action's own diff log shows
+          # uploads landing there byte-identical to local, but the live
+          # domain 404s on a file that only exists at that path. Trying the
+          # addon-domain subfolder next; will re-run the same marker-file
+          # probe against it before trusting this either.
+          server-dir: /public_html/advibeagency.me/
           # 2026-08-25: the previous state file (.ftp-deploy-sync-state.json) got
           # written as if a deploy succeeded when the real file upload silently
           # didn't land — every run since then trusted that stale record and
@@ -30,9 +37,10 @@ jobs:
           #
           # 2026-08-26: same symptom recurred on v3 — run #9 reported success
           # (all steps green) but index.html/services.html on the live site
-          # still didn't match main. Bumping to v4 to force another full
-          # fresh re-sync rather than trusting the incremental diff.
-          state-name: .ftp-deploy-sync-state-v4.json
+          # still didn't match main. Bumping to v4, then v5 for the server-dir
+          # change above — each server-dir gets its own state file so a stale
+          # state from one path can never mask a missing upload on another.
+          state-name: .ftp-deploy-sync-state-v5.json
           exclude: |
             **/.git*
             **/.git*/**
