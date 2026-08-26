@@ -21,14 +21,15 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./site/
-          # 2026-08-26: proved with a uniquely-named marker file (checked
-          # directly over HTTP) that /public_html/ is NOT what LiteSpeed
-          # serves for advibeagency.me — the Action's own diff log shows
-          # uploads landing there byte-identical to local, but the live
-          # domain 404s on a file that only exists at that path. Trying the
-          # addon-domain subfolder next; will re-run the same marker-file
-          # probe against it before trusting this either.
-          server-dir: /public_html/advibeagency.me/
+          # 2026-08-26: marker-file probe (checked directly over HTTP) ruled
+          # out both /public_html/ and /public_html/advibeagency.me/ — the
+          # Action's own diff log shows uploads landing at each, byte-
+          # identical to local, but the live domain 404s on a file that only
+          # exists there. Trying "/" next: this FTP account is very likely
+          # already chrooted/jailed to its own docroot on login, in which
+          # case an absolute path re-specifying that same docroot nests one
+          # level too deep. Will re-run the same marker-file probe here too.
+          server-dir: /
           # 2026-08-25: the previous state file (.ftp-deploy-sync-state.json) got
           # written as if a deploy succeeded when the real file upload silently
           # didn't land — every run since then trusted that stale record and
@@ -37,10 +38,10 @@ jobs:
           #
           # 2026-08-26: same symptom recurred on v3 — run #9 reported success
           # (all steps green) but index.html/services.html on the live site
-          # still didn't match main. Bumping to v4, then v5 for the server-dir
-          # change above — each server-dir gets its own state file so a stale
+          # still didn't match main. Bumping through v4/v5/v6 as server-dir
+          # changes too — each server-dir gets its own state file so a stale
           # state from one path can never mask a missing upload on another.
-          state-name: .ftp-deploy-sync-state-v5.json
+          state-name: .ftp-deploy-sync-state-v6.json
           exclude: |
             **/.git*
             **/.git*/**
