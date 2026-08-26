@@ -27,7 +27,12 @@ jobs:
           # didn't land — every run since then trusted that stale record and
           # skipped re-uploading. Renaming forces one full fresh re-sync of the
           # files this workflow manages (nothing outside that set is touched).
-          state-name: .ftp-deploy-sync-state-v3.json
+          #
+          # 2026-08-26: same symptom recurred on v3 — run #9 reported success
+          # (all steps green) but index.html/services.html on the live site
+          # still didn't match main. Bumping to v4 to force another full
+          # fresh re-sync rather than trusting the incremental diff.
+          state-name: .ftp-deploy-sync-state-v4.json
           exclude: |
             **/.git*
             **/.git*/**
