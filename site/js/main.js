@@ -305,4 +305,40 @@
       }
     });
   }
+
+  /* ---------- Contact page: inline form (contact.html only) ----------
+     Same Formspree endpoint and submit/success pattern as the
+     consultation modal above, just without any of the modal's
+     open/close/focus-trap behavior — this form lives on the page. */
+  const pageForm = document.getElementById("contact-page-form");
+  if (pageForm) {
+    const formWrap = pageForm.closest(".contact-form-wrap");
+    const successEl = formWrap.querySelector(".modal-success");
+    const errorEl = pageForm.querySelector(".form-error");
+    const submitBtn = pageForm.querySelector(".form-submit");
+    const submitLabel = submitBtn.querySelector(".btn-label");
+
+    pageForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorEl.hidden = true;
+      submitBtn.disabled = true;
+      submitLabel.textContent = "Sending…";
+      try {
+        const response = await fetch(pageForm.action, {
+          method: "POST",
+          body: new FormData(pageForm),
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) throw new Error("Formspree request failed");
+        pageForm.hidden = true;
+        successEl.hidden = false;
+        successEl.focus?.();
+      } catch (err) {
+        errorEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitLabel.textContent = "Send message";
+      }
+    });
+  }
 })();

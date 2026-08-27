@@ -790,7 +790,7 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
   color: var(--text-muted);
   margin-bottom: var(--sp-2);
 }
-.form-row input, .form-row textarea {
+.form-row input, .form-row select, .form-row textarea {
   width: 100%;
   background: var(--bg-elevated-2);
   border: 1px solid var(--border);
@@ -802,12 +802,25 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
   transition: border-color var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
 }
 .form-row input::placeholder, .form-row textarea::placeholder { color: var(--text-faint); }
-.form-row input:focus, .form-row textarea:focus {
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus {
   outline: none;
   border-color: var(--gold-400);
   box-shadow: 0 0 0 3px rgba(221, 174, 92, 0.18);
 }
 .form-row textarea { resize: vertical; min-height: 96px; }
+.form-row select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: calc(var(--sp-6) + 4px);
+  color-scheme: dark;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23DDAE5C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-3) center;
+  background-size: 16px;
+}
+.form-row select:invalid { color: var(--text-faint); }
+.form-row select option { background: var(--bg-elevated-2); color: var(--text); }
 
 .form-submit { width: 100%; justify-content: center; margin-top: var(--sp-2); }
 .form-submit[disabled] { opacity: 0.6; cursor: not-allowed; }
@@ -820,6 +833,9 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
 .modal-success svg { width: 48px; height: 48px; color: var(--gold-400); margin: 0 auto var(--sp-4); }
 .modal-success h3 { font-size: var(--fs-h3); margin-bottom: var(--sp-2); }
 .modal-success p { color: var(--text-muted); }
+
+/* ---------- Contact page: inline form (not the popup modal) ---------- */
+.contact-form-wrap { max-width: 480px; margin: 0 auto; }
 
 /* ---------- About page: text-only hero ---------- */
 .page-hero { padding-top: calc(76px + var(--sp-9)); text-align: center; }
