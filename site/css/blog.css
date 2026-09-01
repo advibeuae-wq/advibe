@@ -70,6 +70,7 @@
 .post-article { max-width: 700px; margin-inline: auto; }
 .post-article > * + * { margin-top: var(--sp-5); }
 .post-article h2 { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; margin-top: var(--sp-7); }
+.post-article h3 { font-family: var(--font-display); font-size: var(--fs-body-lg); font-weight: 600; margin-top: var(--sp-6); color: var(--text); }
 .post-article p { font-size: var(--fs-body-lg); line-height: 1.7; color: var(--text); }
 .post-article ul, .post-article ol { padding-left: 1.25em; color: var(--text); font-size: var(--fs-body-lg); line-height: 1.7; }
 .post-article li + li { margin-top: var(--sp-2); }
@@ -88,7 +89,7 @@
 
 .post-byline {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--sp-3);
   padding-top: var(--sp-5);
   margin-top: var(--sp-6);
@@ -96,6 +97,15 @@
   max-width: 700px;
   margin-inline: auto;
 }
+.post-byline-photo {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.post-byline-info { display: flex; flex-direction: column; gap: 2px; }
 .post-byline .post-byline-name { font-family: var(--font-display); font-weight: 700; color: var(--text); }
 .post-byline .post-byline-role { color: var(--text-muted); font-size: 14px; }
 

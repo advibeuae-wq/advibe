@@ -31,9 +31,10 @@ git push
 
 ## Body syntax
 
-Plain text in the body field, blank line = new paragraph. Two extras:
+Plain text in the body field, blank line = new paragraph. A few extras:
 
 - A line starting with `## ` becomes a heading.
+- A line starting with `### ` becomes a sub-heading.
 - A line starting with `> ` becomes a pull-quote / blockquote.
 - `[text](url)` becomes a link, inline.
 
@@ -114,7 +115,7 @@ cms/
    Featured image URL (used for the social-share preview image only — the
    visual article template is unchanged) and SEO description, and the body
    (same mini-markdown as the local tool: blank line = paragraph, `## ` =
-   heading, `> ` = blockquote, `[text](url)` = link).
+   heading, `### ` = sub-heading, `> ` = blockquote, `[text](url)` = link).
 3. **Publish** — one commit lands on `main`; the existing FTP Action takes it
    from there. The success message links the commit and the eventual live URL.
 

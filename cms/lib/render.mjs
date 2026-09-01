@@ -56,9 +56,9 @@ function escapeRegExp(str) {
 
 // ---------- body <-> mini-markup ----------
 
-/** Tiny body markup: blank-line paragraphs, "## " headings, "> " blockquotes,
- *  [text](url) links. Everything else is escaped, so pasted text can't break
- *  the page. */
+/** Tiny body markup: blank-line paragraphs, "## " headings, "### " sub-headings,
+ *  "> " blockquotes, [text](url) links. Everything else is escaped, so pasted
+ *  text can't break the page. */
 export function renderBody(raw) {
   const blocks = String(raw || "")
     .replace(/\r\n/g, "\n")
@@ -87,6 +87,7 @@ export function renderBody(raw) {
 
   return blocks
     .map((block) => {
+      if (block.startsWith("### ")) return `<h3>${linkify(block.slice(4).trim())}</h3>`;
       if (block.startsWith("## ")) return `<h2>${linkify(block.slice(3).trim())}</h2>`;
       if (block.startsWith("> ")) return `<blockquote>${linkify(block.slice(2).trim())}</blockquote>`;
       return `<p>${linkify(block)}</p>`;
@@ -95,13 +96,13 @@ export function renderBody(raw) {
 }
 
 /** Reverse of renderBody: given the inner HTML of <article class="post-article">
- *  (only ever containing <p>/<h2>/<blockquote> with plain text or <a> inside —
- *  the only tags renderBody ever emits), recover the original mini-markup
+ *  (only ever containing <p>/<h2>/<h3>/<blockquote> with plain text or <a>
+ *  inside — the only tags renderBody ever emits), recover the original mini-markup
  *  source well enough to re-populate the editor for a clean edit. Not a
  *  general HTML-to-text converter — relies on the markup being our own. */
 export function unrenderBody(articleInnerHtml) {
   const blocks = [];
-  const re = /<(h2|p|blockquote)>([\s\S]*?)<\/\1>/g;
+  const re = /<(h2|h3|p|blockquote)>([\s\S]*?)<\/\1>/g;
   let m;
   while ((m = re.exec(String(articleInnerHtml || "")))) {
     const [, tag, innerRaw] = m;
@@ -110,6 +111,7 @@ export function unrenderBody(articleInnerHtml) {
       .replace(/<a href="([^"]*)">([\s\S]*?)<\/a>/g, (_, url, label) => `[${label}](${url})`);
     const text = unescapeHtml(withMarkdownLinks);
     if (tag === "h2") blocks.push(`## ${text}`);
+    else if (tag === "h3") blocks.push(`### ${text}`);
     else if (tag === "blockquote") blocks.push(`> ${text}`);
     else blocks.push(text);
   }
@@ -264,8 +266,11 @@ export function renderPostPage({ title, description, category, dateISO, dateLabe
       </article>
 
       <div class="post-byline reveal">
-        <span class="post-byline-name">Abdul Rahim Edavazhikkal</span>
-        <span class="post-byline-role">Founder &amp; Digital Growth Partner, Advibe Agency</span>
+        <img src="../images/abdul-rahim-founder.jpg" alt="Abdul Rahim Edavazhikkal" class="post-byline-photo">
+        <div class="post-byline-info">
+          <span class="post-byline-name">Abdul Rahim Edavazhikkal</span>
+          <span class="post-byline-role">Founder &amp; Digital Growth Partner, Advibe Agency</span>
+        </div>
       </div>
     </div>
   </section>
