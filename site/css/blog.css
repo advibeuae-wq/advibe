@@ -1,0 +1,113 @@
+/* Advibe Agency — Blog
+   The index re-uses the growth-timeline motif from about.html (see
+   styles.css, "Growth timeline"): posts are entries on the same ascending
+   violet→gold line as the founder's own story, newest at the top in full
+   gold. It's the brand's ascending-arrow idea applied to publishing instead
+   of a generic thumbnail card grid — see brand/guidelines.md §1 and §9.
+   Tokens only — no new hex values. */
+
+/* ---------- Index: post timeline ---------- */
+.post-timeline { position: relative; list-style: none; margin: 0; padding: 0; max-width: 760px; margin-inline: auto; }
+.post-timeline::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold-400) 0%, var(--violet-400) 100%);
+  opacity: 0.5;
+}
+
+.post-entry { position: relative; padding-left: var(--sp-7); padding-bottom: var(--sp-7); }
+.post-entry:last-child { padding-bottom: 0; }
+.post-entry-marker {
+  position: absolute;
+  left: 4px; top: 6px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--violet-400);
+}
+.post-entry-featured .post-entry-marker {
+  width: 28px; height: 28px;
+  left: -2px; top: 0;
+  background: var(--gold-gradient);
+  border: none;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 20px rgba(221, 174, 92, 0.35);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-data);
+  font-size: 13px;
+  color: var(--text-faint);
+  margin-bottom: var(--sp-2);
+}
+.post-meta .post-category {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  padding: 3px var(--sp-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.post-entry h2 { font-size: var(--fs-h3); line-height: 1.3; margin-bottom: var(--sp-2); }
+.post-entry-featured h2 { font-size: var(--fs-h2); }
+.post-entry h2 a { color: var(--text); text-decoration: none; }
+.post-entry h2 a:hover { color: var(--gold-300); }
+.post-entry p.post-dek { color: var(--text-muted); max-width: 60ch; }
+
+.post-entry-empty { color: var(--text-muted); padding-left: var(--sp-7); }
+
+/* ---------- Article ---------- */
+.post-article { max-width: 700px; margin-inline: auto; }
+.post-article > * + * { margin-top: var(--sp-5); }
+.post-article h2 { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; margin-top: var(--sp-7); }
+.post-article p { font-size: var(--fs-body-lg); line-height: 1.7; color: var(--text); }
+.post-article ul, .post-article ol { padding-left: 1.25em; color: var(--text); font-size: var(--fs-body-lg); line-height: 1.7; }
+.post-article li + li { margin-top: var(--sp-2); }
+.post-article a { color: var(--gold-400); text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+.post-article a:hover { color: var(--gold-300); }
+.post-article blockquote {
+  margin: 0;
+  padding-left: var(--sp-4);
+  border-left: 2px solid var(--gold-400);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.post-byline {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding-top: var(--sp-5);
+  margin-top: var(--sp-6);
+  border-top: 1px solid var(--border);
+  max-width: 700px;
+  margin-inline: auto;
+}
+.post-byline .post-byline-name { font-family: var(--font-display); font-weight: 700; color: var(--text); }
+.post-byline .post-byline-role { color: var(--text-muted); font-size: 14px; }
+
+.post-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text-muted);
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: var(--sp-5);
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.post-back:hover { color: var(--gold-400); }
+.post-back svg { width: 16px; height: 16px; }
