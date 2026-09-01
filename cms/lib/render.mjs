@@ -55,10 +55,70 @@ function escapeRegExp(str) {
 }
 
 // ---------- body <-> mini-markup ----------
+//
+// Supported block syntax: blank-line-separated paragraphs, "# "/"## " headings
+// (both render as <h2> — the page already has exactly one <h1>, the post
+// title, rendered separately by renderPostPage), "### " sub-headings, "> "
+// blockquotes, and consecutive "- "/"* " lines as a bullet list. Supported
+// inline syntax, usable inside any of the above: [text](url) links,
+// **bold**, and *italic*.
+//
+// Forward parsing is deliberately lenient (accepts "#" and "##" as synonyms,
+// "-" and "*" as synonyms) so pasted AI/ChatGPT markdown works unmodified;
+// reverse parsing (unrenderBody, for the editor's edit flow) always emits
+// ONE canonical form per construct ("## ", "- ") regardless of which
+// synonym was originally used — that distinction isn't worth preserving
+// round-trip.
 
-/** Tiny body markup: blank-line paragraphs, "## " headings, "### " sub-headings,
- *  "> " blockquotes, [text](url) links. Everything else is escaped, so pasted
- *  text can't break the page. */
+/** [text](url) / **bold** / *italic*, applied to a single line or inline run
+ *  of plain (unescaped) source text. Literal text between matches is HTML-
+ *  escaped; matched text is escaped individually inside its tag. Link and
+ *  bold are matched before italic in the same pass so "**bold**" is never
+ *  mis-read as two italic runs, and italic requires a non-space right after
+ *  the opening "*" so "- " / "* " list markers already stripped at the block
+ *  level, and stray multiplication-style "3 * 4", don't get treated as
+ *  emphasis. */
+function inlineFormat(text) {
+  const re = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+?)\*\*|\*([^*\s][^*]*?)\*/g;
+  let result = "";
+  let lastIndex = 0;
+  for (const m of text.matchAll(re)) {
+    result += escapeHtml(text.slice(lastIndex, m.index));
+    if (m[1] !== undefined) {
+      result += `<a href="${escapeAttr(m[2])}">${escapeHtml(m[1])}</a>`;
+    } else if (m[3] !== undefined) {
+      result += `<strong>${escapeHtml(m[3])}</strong>`;
+    } else {
+      result += `<em>${escapeHtml(m[4])}</em>`;
+    }
+    lastIndex = m.index + m[0].length;
+  }
+  result += escapeHtml(text.slice(lastIndex));
+  return result;
+}
+
+/** Reverse of inlineFormat: HTML with <a>/<strong>/<em> back to markdown,
+ *  entities unescaped. Tag conversions run first (source is still
+ *  HTML-escaped at that point, matching how inlineFormat produced it), then
+ *  one unescapeHtml pass over the whole result — mirrors the single-pass
+ *  approach used everywhere else in this file to avoid double-unescaping. */
+function unInlineFormat(html) {
+  const withMarkdown = String(html)
+    .replace(/<a href="([^"]*)">([\s\S]*?)<\/a>/g, (_, url, label) => `[${label}](${url})`)
+    .replace(/<strong>([\s\S]*?)<\/strong>/g, (_, t) => `**${t}**`)
+    .replace(/<em>([\s\S]*?)<\/em>/g, (_, t) => `*${t}*`);
+  return unescapeHtml(withMarkdown);
+}
+
+function listBlockLines(block) {
+  const lines = block
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+  const isList = lines.length > 0 && lines.every((l) => l.startsWith("- ") || l.startsWith("* "));
+  return isList ? lines : null;
+}
+
 export function renderBody(raw) {
   const blocks = String(raw || "")
     .replace(/\r\n/g, "\n")
@@ -66,50 +126,49 @@ export function renderBody(raw) {
     .map((b) => b.trim())
     .filter(Boolean);
 
-  // Escape link label/url and the surrounding plain text separately, from
-  // the raw (unescaped) source — escaping the whole block first and then
-  // matching [label](url) against the already-escaped text would run url
-  // through escapeAttr twice whenever it contains "&" (e.g. "?x=1&y=2"),
-  // corrupting it into "&amp;amp;y=2".
-  const linkRe = /\[([^\]]+)\]\(([^)\s]+)\)/g;
-  const linkify = (text) => {
-    let result = "";
-    let lastIndex = 0;
-    for (const m of text.matchAll(linkRe)) {
-      result += escapeHtml(text.slice(lastIndex, m.index));
-      const [, label, url] = m;
-      result += `<a href="${escapeAttr(url)}">${escapeHtml(label)}</a>`;
-      lastIndex = m.index + m[0].length;
-    }
-    result += escapeHtml(text.slice(lastIndex));
-    return result;
-  };
-
   return blocks
     .map((block) => {
-      if (block.startsWith("### ")) return `<h3>${linkify(block.slice(4).trim())}</h3>`;
-      if (block.startsWith("## ")) return `<h2>${linkify(block.slice(3).trim())}</h2>`;
-      if (block.startsWith("> ")) return `<blockquote>${linkify(block.slice(2).trim())}</blockquote>`;
-      return `<p>${linkify(block)}</p>`;
+      if (block.startsWith("### ")) return `<h3>${inlineFormat(block.slice(4).trim())}</h3>`;
+      if (block.startsWith("## ")) return `<h2>${inlineFormat(block.slice(3).trim())}</h2>`;
+      if (block.startsWith("# ")) return `<h2>${inlineFormat(block.slice(2).trim())}</h2>`;
+      if (block.startsWith("> ")) return `<blockquote>${inlineFormat(block.slice(2).trim())}</blockquote>`;
+
+      const listLines = listBlockLines(block);
+      if (listLines) {
+        const items = listLines.map((l) => `<li>${inlineFormat(l.slice(2).trim())}</li>`).join("\n          ");
+        return `<ul>\n          ${items}\n        </ul>`;
+      }
+
+      return `<p>${inlineFormat(block)}</p>`;
     })
     .join("\n\n        ");
 }
 
 /** Reverse of renderBody: given the inner HTML of <article class="post-article">
- *  (only ever containing <p>/<h2>/<h3>/<blockquote> with plain text or <a>
- *  inside — the only tags renderBody ever emits), recover the original mini-markup
- *  source well enough to re-populate the editor for a clean edit. Not a
- *  general HTML-to-text converter — relies on the markup being our own. */
+ *  (only ever containing <p>/<h2>/<h3>/<blockquote>/<ul><li> with plain text,
+ *  <a>, <strong>, or <em> inside — the only tags renderBody ever emits),
+ *  recover mini-markup source well enough to re-populate the editor for a
+ *  clean edit. Not a general HTML-to-text converter — relies on the markup
+ *  being our own. */
 export function unrenderBody(articleInnerHtml) {
   const blocks = [];
-  const re = /<(h2|h3|p|blockquote)>([\s\S]*?)<\/\1>/g;
+  const re = /<(h2|h3|p|blockquote|ul)>([\s\S]*?)<\/\1>/g;
   let m;
   while ((m = re.exec(String(articleInnerHtml || "")))) {
     const [, tag, innerRaw] = m;
-    const withMarkdownLinks = innerRaw
-      .trim()
-      .replace(/<a href="([^"]*)">([\s\S]*?)<\/a>/g, (_, url, label) => `[${label}](${url})`);
-    const text = unescapeHtml(withMarkdownLinks);
+
+    if (tag === "ul") {
+      const items = [];
+      const liRe = /<li>([\s\S]*?)<\/li>/g;
+      let lm;
+      while ((lm = liRe.exec(innerRaw))) {
+        items.push(`- ${unInlineFormat(lm[1].trim())}`);
+      }
+      blocks.push(items.join("\n"));
+      continue;
+    }
+
+    const text = unInlineFormat(innerRaw.trim());
     if (tag === "h2") blocks.push(`## ${text}`);
     else if (tag === "h3") blocks.push(`### ${text}`);
     else if (tag === "blockquote") blocks.push(`> ${text}`);
@@ -122,10 +181,17 @@ export function wordCount(html) {
   return (html.replace(/<[^>]+>/g, " ").match(/\S+/g) || []).length;
 }
 
-/** First-paragraph summary, used as a fallback when no SEO description is given. */
+/** First-paragraph summary, used as a fallback when no SEO description is given.
+ *  Strips inline tags down to their text — the dek lands in a plain-text
+ *  <p class="lede"> and in <meta> attributes, not inside .post-article, so
+ *  any <a>/<strong>/<em> here has to come out as plain text, not markup. */
 export function deriveDek(bodyHtml, maxLen = 160) {
   const firstP = (bodyHtml.match(/<p>([\s\S]*?)<\/p>/) || [, ""])[1];
-  const text = unescapeHtml(firstP.replace(/<a href="[^"]*">([\s\S]*?)<\/a>/g, "$1")).trim();
+  const stripped = firstP
+    .replace(/<a href="[^"]*">([\s\S]*?)<\/a>/g, "$1")
+    .replace(/<strong>([\s\S]*?)<\/strong>/g, "$1")
+    .replace(/<em>([\s\S]*?)<\/em>/g, "$1");
+  const text = unescapeHtml(stripped).trim();
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen - 1).replace(/\s+\S*$/, "") + "…";
 }

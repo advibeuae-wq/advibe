@@ -111,16 +111,19 @@ const FORM_PAGE = `<!doctype html>
       <input id="dek" name="dek" required maxlength="200" placeholder="A short note on why this exists.">
 
       <label for="body">Body</label>
-      <textarea id="body" name="body" required placeholder="Plain paragraphs, separated by a blank line.
+      <textarea id="body" name="body" required placeholder="Paste Markdown from ChatGPT/AI directly, or write plain paragraphs separated by a blank line.
 
 ## A heading
 
 ### A sub-heading
 
+- A bullet
+- Another bullet
+
 &gt; A pull-quote / blockquote.
 
-[A link](https://example.com) works inline too."></textarea>
-      <p class="hint">Blank line = new paragraph. A line starting with "## " becomes a heading, "### " becomes a sub-heading, "&gt; " becomes a blockquote.</p>
+**Bold**, *italic*, and [a link](https://example.com) all work inline."></textarea>
+      <p class="hint">Blank line = new paragraph. "# " or "## " becomes a heading, "### " a sub-heading, "&gt; " a blockquote, "- " or "* " a bullet list. Inline: **bold**, *italic*, [text](url).</p>
 
       <button type="submit">Generate post</button>
     </form>

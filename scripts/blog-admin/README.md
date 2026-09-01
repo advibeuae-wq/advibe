@@ -31,14 +31,28 @@ git push
 
 ## Body syntax
 
-Plain text in the body field, blank line = new paragraph. A few extras:
+Close enough to standard Markdown that pasting a ChatGPT/AI draft in as-is
+works without manual cleanup. Blank line = new paragraph. Block-level:
 
-- A line starting with `## ` becomes a heading.
-- A line starting with `### ` becomes a sub-heading.
-- A line starting with `> ` becomes a pull-quote / blockquote.
-- `[text](url)` becomes a link, inline.
+- `# ` or `## ` becomes a heading. (Both map to the same `<h2>` — the page
+  already has one `<h1>`, the post title, rendered separately.)
+- `### ` becomes a sub-heading.
+- `> ` becomes a pull-quote / blockquote.
+- Consecutive lines starting with `- ` or `* ` become a bullet list.
+
+Inline, usable anywhere above (headings, blockquotes, list items, paragraphs):
+
+- `**bold**` becomes `<strong>`.
+- `*italic*` becomes `<em>`. Requires no space right after the opening `*`,
+  so it's never confused with a `- `/`* ` list marker.
+- `[text](url)` becomes a link.
 
 Everything else is HTML-escaped, so pasted text can't break the page.
+
+Editing an existing post always reconstructs the *canonical* form — `## `
+(never a bare `# `) and `- ` (never `* `) — regardless of which synonym was
+originally typed. That distinction isn't preserved round-trip; the rendered
+output is identical either way.
 
 ## Why this exists instead of WordPress
 
@@ -114,8 +128,8 @@ cms/
 2. `/editor` — fill in Title, Slug (auto-filled from the title), optional
    Featured image URL (used for the social-share preview image only — the
    visual article template is unchanged) and SEO description, and the body
-   (same mini-markdown as the local tool: blank line = paragraph, `## ` =
-   heading, `### ` = sub-heading, `> ` = blockquote, `[text](url)` = link).
+   (same body syntax as the local tool — see "Body syntax" above; close
+   enough to standard Markdown to paste a ChatGPT/AI draft in unmodified).
 3. **Publish** — one commit lands on `main`; the existing FTP Action takes it
    from there. The success message links the commit and the eventual live URL.
 
