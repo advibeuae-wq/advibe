@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/public/login.html" },
+    { "source": "/login", "destination": "/public/login.html" },
+    { "source": "/editor", "destination": "/public/editor.html" }
+  ]
+}

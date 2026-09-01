@@ -1,0 +1,8 @@
+{
+  "name": "advibe-blog-cms",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "description": "Remote blog CMS for advibeagency.me — publishes via the GitHub API onto the repo the existing GitHub Actions FTP workflow already deploys.",
+  "dependencies": {}
+}

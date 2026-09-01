@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advibe CMS — Editor</title>
+<style>
+  :root {
+    --bg: #0A0A0A; --bg-elevated: #141414; --border: rgba(255,255,255,.08);
+    --text: #F2EFEA; --text-muted: #A8A29A; --gold-400: #DDAE5C; --gold-300: #F0CE84;
+    --negative: #E8998C; --positive: #8FBF8C;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 -apple-system, "Segoe UI", sans-serif; margin: 0; }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 10;
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 700; }
+  header .mode-tag { color: var(--text-muted); font-size: 13px; margin-left: 10px; }
+  header nav { display: flex; gap: 12px; align-items: center; }
+  header a, header button {
+    background: none; border: 1px solid var(--border); color: var(--text-muted);
+    font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  }
+  header a:hover, header button:hover { color: var(--text); border-color: var(--gold-400); }
+
+  main { max-width: 760px; margin: 0 auto; padding: 32px 24px 96px; }
+  .find-bar { display: flex; gap: 8px; margin-bottom: 32px; }
+  .find-bar input { flex: 1; }
+  .find-bar button { white-space: nowrap; }
+
+  label { display: block; font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); margin: 24px 0 8px; }
+  label:first-of-type { margin-top: 0; }
+  input, textarea {
+    width: 100%; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 12px 14px; font: inherit;
+  }
+  input:focus, textarea:focus { outline: 2px solid var(--gold-400); outline-offset: 1px; }
+  input:disabled { opacity: .6; }
+  textarea#body { min-height: 320px; font-family: "SFMono-Regular", ui-monospace, Menlo, monospace; font-size: 14px; resize: vertical; }
+  .hint { color: var(--text-muted); font-size: 13px; margin-top: 6px; }
+
+  .row { display: flex; gap: 16px; }
+  .row > div { flex: 1; }
+
+  #publish-btn {
+    margin-top: 32px; background: linear-gradient(90deg, #B0813A, var(--gold-300));
+    border: none; color: #201200; font-weight: 700; padding: 14px 28px; border-radius: 999px;
+    font-size: 15px; cursor: pointer;
+  }
+  #publish-btn:disabled { opacity: .6; cursor: default; }
+
+  .status { padding: 14px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; display: none; }
+  .status.error { background: rgba(232,153,140,.12); border: 1px solid var(--negative); color: var(--negative); }
+  .status.success { background: rgba(143,191,140,.12); border: 1px solid var(--positive); color: var(--positive); }
+  .status a { color: inherit; text-decoration: underline; }
+  .status code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <header>
+    <div><h1 style="display:inline">Advibe CMS</h1><span class="mode-tag" id="mode-tag">New post</span></div>
+    <nav>
+      <a href="/editor">New post</a>
+      <button id="logout-btn" type="button">Sign out</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="find-bar">
+      <input id="find-slug" placeholder="Edit an existing post by slug (e.g. welcome-to-the-advibe-blog)">
+      <button id="find-btn" type="button">Open</button>
+    </div>
+
+    <p class="status" id="status"></p>
+
+    <form id="post-form">
+      <label for="title">Blog title</label>
+      <input id="title" name="title" required placeholder="Why we're starting a blog">
+
+      <label for="slug">Slug</label>
+      <input id="slug" name="slug" required placeholder="why-were-starting-a-blog">
+      <p class="hint" id="slug-hint">Auto-filled from the title — edit it if you want a different URL.</p>
+
+      <label for="imageUrl">Featured image URL <span style="text-transform:none;font-weight:400;">(optional — used for social share previews only)</span></label>
+      <input id="imageUrl" name="imageUrl" placeholder="https://…">
+
+      <label for="description">SEO description <span style="text-transform:none;font-weight:400;">(optional — shown under the title and used for search/social previews; auto-derived from the first paragraph if left blank)</span></label>
+      <input id="description" name="description" maxlength="200">
+
+      <label for="body">Blog body</label>
+      <textarea id="body" name="body" required placeholder="Plain paragraphs, separated by a blank line.
+
+## A heading
+
+&gt; A pull-quote / blockquote.
+
+[A link](https://example.com) works inline too."></textarea>
+      <p class="hint">Blank line = new paragraph. A line starting with "## " becomes a heading, "&gt; " becomes a blockquote.</p>
+
+      <button type="submit" id="publish-btn">Publish</button>
+    </form>
+  </main>
+
+  <script>
+    const els = {
+      modeTag: document.getElementById("mode-tag"),
+      status: document.getElementById("status"),
+      form: document.getElementById("post-form"),
+      title: document.getElementById("title"),
+      slug: document.getElementById("slug"),
+      slugHint: document.getElementById("slug-hint"),
+      imageUrl: document.getElementById("imageUrl"),
+      description: document.getElementById("description"),
+      body: document.getElementById("body"),
+      publishBtn: document.getElementById("publish-btn"),
+      findSlug: document.getElementById("find-slug"),
+      findBtn: document.getElementById("find-btn"),
+      logoutBtn: document.getElementById("logout-btn"),
+    };
+
+    let mode = "create";
+    let slugTouched = false;
+
+    function showStatus(kind, html) {
+      els.status.className = "status " + kind;
+      els.status.innerHTML = html;
+      els.status.style.display = "block";
+    }
+    function hideStatus() {
+      els.status.style.display = "none";
+    }
+
+    function slugify(input) {
+      return String(input)
+        .toLowerCase()
+        .normalize("NFKD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 80);
+    }
+
+    els.title.addEventListener("input", () => {
+      if (!slugTouched && mode === "create") els.slug.value = slugify(els.title.value);
+    });
+    els.slug.addEventListener("input", () => { slugTouched = true; });
+
+    async function requireAuth() {
+      const res = await fetch("/api/me");
+      const data = await res.json();
+      if (!data.authenticated) window.location.href = "/login";
+    }
+
+    function setEditMode(slug) {
+      mode = "edit";
+      slugTouched = true;
+      els.slug.value = slug;
+      els.slug.disabled = true;
+      els.modeTag.textContent = "Editing: " + slug;
+      els.publishBtn.textContent = "Save changes";
+      history.replaceState(null, "", "/editor?slug=" + encodeURIComponent(slug));
+    }
+
+    async function loadForEdit(slug) {
+      hideStatus();
+      const res = await fetch("/api/edit/" + encodeURIComponent(slug));
+      const data = await res.json();
+      if (!data.ok) {
+        showStatus("error", data.error || "Could not load that post.");
+        return;
+      }
+      setEditMode(data.slug);
+      els.title.value = data.title || "";
+      els.imageUrl.value = data.imageUrl || "";
+      els.description.value = data.dek || "";
+      els.body.value = data.body || "";
+    }
+
+    els.findBtn.addEventListener("click", () => {
+      const slug = slugify(els.findSlug.value.trim());
+      if (slug) window.location.href = "/editor?slug=" + encodeURIComponent(slug);
+    });
+
+    els.logoutBtn.addEventListener("click", async () => {
+      await fetch("/api/logout", { method: "POST" });
+      window.location.href = "/login";
+    });
+
+    els.form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideStatus();
+      els.publishBtn.disabled = true;
+      els.publishBtn.textContent = mode === "edit" ? "Saving…" : "Publishing…";
+
+      try {
+        const res = await fetch("/api/publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode,
+            title: els.title.value.trim(),
+            slug: els.slug.value.trim(),
+            imageUrl: els.imageUrl.value.trim(),
+            description: els.description.value.trim(),
+            body: els.body.value,
+          }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showStatus(
+            "success",
+            (data.mode === "edit" ? "Saved. " : "Published. ") +
+              'Commit <a href="' + data.commitUrl + '" target="_blank" rel="noopener">' + data.commitSha.slice(0, 7) + "</a> is on <code>main</code> — " +
+              "the existing GitHub Action will FTP it to Namecheap shortly. Live at " +
+              '<a href="' + data.liveUrl + '" target="_blank" rel="noopener">' + data.liveUrl + "</a> once that finishes."
+          );
+          if (data.mode === "create") setEditMode(data.slug);
+        } else {
+          showStatus("error", data.error || "Something went wrong.");
+        }
+      } catch {
+        showStatus("error", "Network error — please try again.");
+      } finally {
+        els.publishBtn.disabled = false;
+        els.publishBtn.textContent = mode === "edit" ? "Save changes" : "Publish";
+      }
+    });
+
+    (async function init() {
+      await requireAuth();
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("slug");
+      if (slug) await loadForEdit(slug);
+    })();
+  </script>
+</body>
+</html>
