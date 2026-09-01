@@ -362,8 +362,12 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
 
 /* Brands we've worked with — logo marquee, same right-to-left loop as the
    hero's platform chips (marquee keyframes above), full-bleed instead of
-   contained to a card. Placeholder logos live in images/brands/ until
-   real client marks are approved to publish — see that folder's README. */
+   contained to a card. Client logos live in images/brands/, sourced as
+   transparent-bg PNGs — see that folder's README. Each mark renders as a
+   flat off-white silhouette (brightness(0) invert(1) collapses any source
+   color to black-on-transparent, then to white) so 12 differently-branded
+   logos read as one composed set instead of a clashing color jumble; full
+   color reveals on hover as a reward for the interaction. */
 .brands-section { text-align: center; }
 .brands-marquee-mask {
   margin-top: var(--sp-7);
@@ -387,11 +391,15 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); font-weight: 
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.7;
-  transition: opacity var(--dur-micro) var(--ease-out);
 }
-.brand-tile:hover { opacity: 1; }
-.brand-tile img { max-width: 100%; max-height: 100%; }
+.brand-tile img {
+  max-width: 100%;
+  max-height: 100%;
+  filter: brightness(0) invert(1);
+  opacity: 0.55;
+  transition: opacity var(--dur-micro) var(--ease-out), filter var(--dur-micro) var(--ease-out);
+}
+.brand-tile:hover img { opacity: 1; filter: none; }
 
 @media (min-width: 960px) {
   .hero .container { grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-9); }
