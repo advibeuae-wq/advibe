@@ -19,6 +19,7 @@
 <meta property="og:description" content="Performance marketing and PPC that drives real, measurable growth for Dubai & UAE businesses.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="images/og-image-base.png">
+<link rel="canonical" href="https://advibeagency.me/">
 <link rel="icon" type="image/png" href="images/favicon-32.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 
@@ -33,18 +34,26 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "LocalBusiness"],
   "@id": "https://advibeagency.me/#organization",
   "name": "Advibe Agency FZ-LLC",
   "url": "https://advibeagency.me/",
   "logo": "https://advibeagency.me/images/advibe-logo.png",
+  "image": "https://advibeagency.me/images/advibe-logo.png",
   "description": "Advibe Agency is a founder-led performance marketing agency based in Ras Al Khaimah, serving Dubai, Abu Dhabi, and the UAE. Data-driven Google Ads, Meta Ads, and PPC — no account-manager layer.",
+  "telephone": "+971501390421",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "VUET1006 Compass Building",
     "addressLocality": "Ras Al Khaimah",
     "addressCountry": "AE"
   },
+  "areaServed": [
+    { "@type": "City", "name": "Dubai" },
+    { "@type": "City", "name": "Abu Dhabi" },
+    { "@type": "City", "name": "Ras Al Khaimah" },
+    { "@type": "Country", "name": "United Arab Emirates" }
+  ],
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "connect@advibeagency.me",
@@ -113,7 +122,10 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-media" aria-hidden="true">
-      <img src="images/hero-dubai.jpg" alt="">
+      <picture>
+        <source srcset="images/hero-dubai.webp" type="image/webp">
+        <img src="images/hero-dubai.jpg" alt="">
+      </picture>
     </div>
     <div class="container">
       <div class="hero-copy">
