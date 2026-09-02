@@ -51,7 +51,12 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      // threshold is a fraction of the TARGET's own area, not the viewport's —
+      // for an element taller than ~6.7x the viewport (a long blog article
+      // wrapped in one .reveal, e.g.), no scroll position can ever show 15%
+      // of its total height, so it would stay opacity:0 forever. threshold: 0
+      // fires as soon as any part of the element enters the (shrunk) viewport.
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" }
     );
     revealEls.forEach((el) => revealObserver.observe(el));
   }
