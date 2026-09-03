@@ -8,5 +8,8 @@ Advibe Agency is a founder-led performance marketing agency based in Ras Al Khai
 ## Services
 [Full services list](https://advibeagency.me/services.html)
 
+## Blog
+[Advibe Agency Blog](https://advibeagency.me/blog/) — notes on Google Ads, Meta Ads, SEO, and performance marketing from our own campaigns.
+
 ## Contact
 [Get in touch](https://advibeagency.me/contact.html)

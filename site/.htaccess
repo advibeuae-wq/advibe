@@ -1,5 +1,13 @@
 RewriteEngine On
 
+# Canonicalize www to non-www (advibeagency.me is the canonical host;
+# www.advibeagency.me currently serves identical content with no
+# redirect, which is a duplicate-content risk). Placed before the
+# index.html rule so www.../index.html chains through both cleanly
+# rather than looping.
+RewriteCond %{HTTP_HOST} ^www\.advibeagency\.me$ [NC]
+RewriteRule ^(.*)$ https://advibeagency.me/$1 [R=301,L]
+
 # Canonicalize /index.html to / with a permanent redirect (SEO: avoid
 # duplicate-content between the two URLs for the homepage). Pattern is
 # anchored to the root-level file only, so /blog/index.html is untouched.
