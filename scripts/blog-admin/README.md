@@ -147,10 +147,70 @@ featured/non-featured status untouched), and its `sitemap.xml` `<lastmod>`.
   this flow may not parse back cleanly.
 - The slug is locked once you're editing a post — renaming a published slug
   (moving the file, updating every link to it) isn't implemented in Phase 1.
-- No list of existing posts in the UI yet — you need the slug. It's visible
-  in the timeline on `/blog/` or in `site/blog/index.html`.
 - Category is fixed to "Blog" for every post (not a field in the Phase 1
   editor); read time is still auto-estimated from word count.
 - Single admin, one shared password, no per-user accounts, no draft/PR review
   step — everything published lands straight on `main`. See
   `[[blog-system-architecture]]` in memory for what was deliberately deferred.
+
+---
+
+## Phase 2 — Blog Posts list, Page Content editor, image uploads
+
+The dashboard at `/editor` now has three tabs, all reachable once signed in:
+
+- **Blog Posts** — everything above, plus a list view (title, date, category,
+  featured badge) fetched from `GET /api/posts`
+  (`parseIndexTimeline` in `cms/lib/render.mjs`, reading the same
+  `site/blog/index.html` timeline). "Edit" opens the existing edit flow — the
+  gap called out above ("no list of existing posts") is closed. The featured
+  image field also got an "Upload image" button next to the URL field
+  (`POST /api/images/upload`), so it no longer requires already having a
+  hosted image URL.
+
+- **Page Content** — edits the visible text and photos on the 17 top-level
+  marketing pages (`site/index.html`, `about.html`, the 12 service pages,
+  etc.) without touching HTML. This works by string-surgery, the same
+  approach as the blog editor, not a re-render:
+  - `scripts/cms-tag-content.mjs` is a one-time (safely re-runnable) codemod
+    that stamps a `data-cms="<id>"` attribute onto headings, paragraphs, list
+    items, blockquotes, `.btn-label` spans, and content `<img>`s inside each
+    page's `<main>` — never the hand-duplicated header/nav/footer/modal
+    chrome, and never anything with markup the editor can't safely round-trip
+    (a heading with a decorative `<span>` other than the one recognized
+    accent case, a stat-bar sub-component, etc. — those are left untagged on
+    purpose; see the script's own comments for the exact rule).
+  - `cms/lib/content.mjs` reads (`parsePageFields`) and writes
+    (`applyFieldUpdates`) those tagged fields — `GET/POST /api/pages/[page]`.
+    Saving an image field also re-points a matching `<meta property="og:image">`
+    if it was pointing at the same file (several service pages reuse their
+    hero photo as their share image), and drops a stale `<source>`/webp pairing
+    rather than leaving it pointing at bytes that no longer match its type.
+  - Paragraph-type fields support the same mini-markdown as the blog body
+    (`**bold**`, `*italic*`, `[text](url)`) plus one more token, `==highlight==`,
+    for the one recurring `<span class="accent">` gold-highlight case (e.g.
+    `index.html`'s hero headline).
+  - **Not covered on purpose:** shared header/nav/footer/consultation-modal
+    markup — every page hand-duplicates that chrome (no include/template
+    step exists), so a "global" text edit there would mean 17 separate saves
+    for one visible change. Worth revisiting only alongside introducing a
+    real template step, not folded into this.
+
+- **Brand Assets** — a separate panel (`GET/POST /api/brand-assets`) for the
+  handful of images that *are* meant to change everywhere at once: the logo,
+  favicon, apple-touch-icon, and the default social-share image. Uploading a
+  replacement here re-points every page that currently references the old
+  file, in one atomic commit. Deliberately excluded from per-page Page
+  Content tagging for exactly that reason.
+
+- **Image uploads** (`cms/lib/images.mjs`, used by both `/api/images/upload`
+  and `/api/brand-assets`) never overwrite an existing filename — every
+  upload gets a short content-hash suffix (`hero-dubai-a1c9f2.jpg`), capped
+  at 4MB. That's a deliberate cache-busting + no-silent-collision choice: a
+  page-scoped replace can never accidentally change what a *different* page
+  shows just because it happened to reference the same old filename.
+
+**Known gap:** the full click-Save-in-the-browser round trip (auth → GitHub
+commit → FTP deploy) needs live `CMS_PASSWORD`/`SESSION_SECRET`/`GITHUB_TOKEN`
+and hasn't been exercised end-to-end outside this repo's dev environment —
+give it one real smoke test after deploying before relying on it daily.

@@ -50,7 +50,7 @@ function unescapeHtml(str) {
     .replace(/&amp;/g, "&");
 }
 
-function escapeRegExp(str) {
+export function escapeRegExp(str) {
   return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
@@ -70,16 +70,19 @@ function escapeRegExp(str) {
 // synonym was originally used — that distinction isn't worth preserving
 // round-trip.
 
-/** [text](url) / **bold** / *italic*, applied to a single line or inline run
- *  of plain (unescaped) source text. Literal text between matches is HTML-
- *  escaped; matched text is escaped individually inside its tag. Link and
- *  bold are matched before italic in the same pass so "**bold**" is never
- *  mis-read as two italic runs, and italic requires a non-space right after
- *  the opening "*" so "- " / "* " list markers already stripped at the block
- *  level, and stray multiplication-style "3 * 4", don't get treated as
- *  emphasis. */
-function inlineFormat(text) {
-  const re = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+?)\*\*|\*([^*\s][^*]*?)\*/g;
+/** [text](url) / **bold** / *italic* / ==highlight==, applied to a single
+ *  line or inline run of plain (unescaped) source text. Literal text between
+ *  matches is HTML-escaped; matched text is escaped individually inside its
+ *  tag. Link and bold are matched before italic in the same pass so
+ *  "**bold**" is never mis-read as two italic runs, and italic requires a
+ *  non-space right after the opening "*" so "- " / "* " list markers already
+ *  stripped at the block level, and stray multiplication-style "3 * 4",
+ *  don't get treated as emphasis. "==highlight==" maps to the page-content
+ *  editor's one recurring accent-color span (e.g. index.html's hero
+ *  headline) — not used by the blog body template today, but shared here
+ *  since it's the same escaping/matching machinery. */
+export function inlineFormat(text) {
+  const re = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+?)\*\*|\*([^*\s][^*]*?)\*|==([^=]+?)==/g;
   let result = "";
   let lastIndex = 0;
   for (const m of text.matchAll(re)) {
@@ -88,8 +91,10 @@ function inlineFormat(text) {
       result += `<a href="${escapeAttr(m[2])}">${escapeHtml(m[1])}</a>`;
     } else if (m[3] !== undefined) {
       result += `<strong>${escapeHtml(m[3])}</strong>`;
-    } else {
+    } else if (m[4] !== undefined) {
       result += `<em>${escapeHtml(m[4])}</em>`;
+    } else {
+      result += `<span class="accent">${escapeHtml(m[5])}</span>`;
     }
     lastIndex = m.index + m[0].length;
   }
@@ -102,11 +107,12 @@ function inlineFormat(text) {
  *  HTML-escaped at that point, matching how inlineFormat produced it), then
  *  one unescapeHtml pass over the whole result — mirrors the single-pass
  *  approach used everywhere else in this file to avoid double-unescaping. */
-function unInlineFormat(html) {
+export function unInlineFormat(html) {
   const withMarkdown = String(html)
     .replace(/<a href="([^"]*)">([\s\S]*?)<\/a>/g, (_, url, label) => `[${label}](${url})`)
     .replace(/<strong>([\s\S]*?)<\/strong>/g, (_, t) => `**${t}**`)
-    .replace(/<em>([\s\S]*?)<\/em>/g, (_, t) => `*${t}*`);
+    .replace(/<em>([\s\S]*?)<\/em>/g, (_, t) => `*${t}*`)
+    .replace(/<span class="accent">([\s\S]*?)<\/span>/g, (_, t) => `==${t}==`);
   return unescapeHtml(withMarkdown);
 }
 
@@ -449,6 +455,42 @@ export function parsePostPage(html) {
     imageUrl: image === DEFAULT_OG_IMAGE ? "" : image,
     body,
   };
+}
+
+/**
+ * Reads the <ol class="post-timeline"> in site/blog/index.html and returns
+ * every entry as plain data — the list the CMS's "Blog Posts" tab renders.
+ * Order matches document order (top = most recently featured/edited-in-place).
+ */
+export function parseIndexTimeline(html) {
+  const timelineMatch = html.match(/<ol class="post-timeline">([\s\S]*?)<\/ol>/);
+  if (!timelineMatch) return [];
+  const items = timelineMatch[1].match(/<li class="[^"]*">[\s\S]*?<\/li>/g) || [];
+
+  return items.map((li) => {
+    const cls = (li.match(/<li class="([^"]*)">/) || [, ""])[1];
+    const dateISO = (li.match(/<time datetime="([^"]*)"/) || [, ""])[1];
+    const dateLabel = unescapeHtml((li.match(/<time datetime="[^"]*">([\s\S]*?)<\/time>/) || [, ""])[1].trim());
+    const category = unescapeHtml((li.match(/<span class="post-category">([\s\S]*?)<\/span>/) || [, ""])[1].trim());
+    const readTime = unescapeHtml(
+      (li.match(/<span class="post-category">[\s\S]*?<\/span>\s*<span>([\s\S]*?)<\/span>/) || [, ""])[1].trim()
+    );
+    const h2Match = li.match(/<h2><a href="([^"]*)">([\s\S]*?)<\/a><\/h2>/);
+    const slug = h2Match ? h2Match[1].replace(/\.html$/, "") : "";
+    const title = h2Match ? unescapeHtml(h2Match[2].trim()) : "";
+    const dek = unescapeHtml((li.match(/<p class="post-dek">([\s\S]*?)<\/p>/) || [, ""])[1].trim());
+
+    return {
+      slug,
+      title,
+      dek,
+      category,
+      dateISO,
+      dateLabel,
+      readTime,
+      featured: cls.includes("post-entry-featured"),
+    };
+  });
 }
 
 // ---------- site/blog/index.html + site/sitemap.xml string surgery ----------

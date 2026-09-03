@@ -46,7 +46,10 @@ export async function getFile(path) {
 
 /**
  * Commits multiple files in a single atomic commit to the configured branch.
- * files: [{ path, content }]
+ * files: [{ path, content, encoding }] — encoding defaults to "utf-8" (plain
+ * text files); pass encoding: "base64" with content already base64-encoded
+ * for binary files (images). Mixing text and binary files in one call is
+ * fine — each blob is created with its own encoding.
  * Throws an Error whose message starts with "CONCURRENT_UPDATE:" if the
  * branch moved between reading and writing (non-fast-forward) — the caller
  * should surface that as "please retry" rather than a generic 500.
@@ -71,7 +74,7 @@ export async function commitFiles({ files, message }) {
     const blobRes = await fetch(`${base}/git/blobs`, {
       method: "POST",
       headers,
-      body: JSON.stringify({ content: f.content, encoding: "utf-8" }),
+      body: JSON.stringify({ content: f.content, encoding: f.encoding || "utf-8" }),
     });
     if (!blobRes.ok) throw new Error(`Could not create blob for ${f.path}: ${blobRes.status} ${await blobRes.text()}`);
     const blob = await blobRes.json();
