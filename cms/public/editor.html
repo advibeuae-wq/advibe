@@ -6,7 +6,7 @@
 <title>Advibe CMS — Editor</title>
 <style>
   :root {
-    --bg: #0A0A0A; --bg-elevated: #141414; --border: rgba(255,255,255,.08);
+    --bg: #0A0A0A; --bg-elevated: #141414; --bg-raised: #1B1B1B; --border: rgba(255,255,255,.08);
     --text: #F2EFEA; --text-muted: #A8A29A; --gold-400: #DDAE5C; --gold-300: #F0CE84;
     --negative: #E8998C; --positive: #8FBF8C;
   }
@@ -18,80 +18,201 @@
     position: sticky; top: 0; background: var(--bg); z-index: 10;
   }
   header h1 { font-size: 16px; margin: 0; font-weight: 700; }
-  header .mode-tag { color: var(--text-muted); font-size: 13px; margin-left: 10px; }
-  header nav { display: flex; gap: 12px; align-items: center; }
   header a, header button {
     background: none; border: 1px solid var(--border); color: var(--text-muted);
     font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 999px; cursor: pointer; text-decoration: none;
   }
   header a:hover, header button:hover { color: var(--text); border-color: var(--gold-400); }
 
-  main { max-width: 760px; margin: 0 auto; padding: 32px 24px 96px; }
+  main { max-width: 880px; margin: 0 auto; padding: 24px 24px 96px; }
+
+  /* ---- tabs ---- */
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .tab-btn {
+    background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-muted);
+    font: inherit; font-size: 14px; font-weight: 700; padding: 10px 6px; margin-right: 20px; cursor: pointer;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--gold-400); }
+  .tab-panel[hidden] { display: none; }
+
+  a.link-btn, button.link-btn {
+    background: none; border: none; color: var(--text-muted); font: inherit; font-size: 13px;
+    padding: 0; cursor: pointer; text-decoration: none; display: inline-block; margin-bottom: 20px;
+  }
+  a.link-btn:hover, button.link-btn:hover { color: var(--gold-400); }
+
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .hint { color: var(--text-muted); font-size: 13px; margin: 0 0 20px; }
+
+  .btn-pill {
+    background: linear-gradient(90deg, #B0813A, var(--gold-300));
+    border: none; color: #201200; font-weight: 700; padding: 11px 22px; border-radius: 999px;
+    font-size: 14px; cursor: pointer; white-space: nowrap;
+  }
+  .btn-pill:disabled { opacity: .55; cursor: default; }
+  .btn-secondary {
+    background: none; border: 1px solid var(--border); color: var(--text); font-weight: 600;
+    padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--gold-400); }
+
+  .status { padding: 14px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; display: none; }
+  .status.error { background: rgba(232,153,140,.12); border: 1px solid var(--negative); color: var(--negative); }
+  .status.success { background: rgba(143,191,140,.12); border: 1px solid var(--positive); color: var(--positive); }
+  .status.info { background: rgba(221,174,92,.1); border: 1px solid var(--gold-400); color: var(--gold-300); }
+  .status a { color: inherit; text-decoration: underline; }
+  .status code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 4px; }
+
+  label { display: block; font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); margin: 24px 0 8px; }
+  label:first-of-type { margin-top: 0; }
+  input[type=text], input[type=url], input:not([type]), textarea {
+    width: 100%; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 12px 14px; font: inherit;
+  }
+  input:focus, textarea:focus, button:focus-visible, .page-card:focus-visible, .tab-btn:focus-visible {
+    outline: 2px solid var(--gold-400); outline-offset: 1px;
+  }
+  input:disabled { opacity: .6; }
+  textarea#body { min-height: 320px; font-family: "SFMono-Regular", ui-monospace, Menlo, monospace; font-size: 14px; resize: vertical; }
+
+  .row { display: flex; gap: 16px; }
+  .row > div { flex: 1; }
   .find-bar { display: flex; gap: 8px; margin-bottom: 32px; }
   .find-bar input { flex: 1; }
   .find-bar button { white-space: nowrap; }
 
-  label { display: block; font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); margin: 24px 0 8px; }
-  label:first-of-type { margin-top: 0; }
-  input, textarea {
-    width: 100%; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text); padding: 12px 14px; font: inherit;
+  /* ---- Blog Posts list ---- */
+  .post-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .post-table th { text-align: left; color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; padding: 0 10px 10px; border-bottom: 1px solid var(--border); }
+  .post-table td { padding: 14px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .post-table tr:last-child td { border-bottom: none; }
+  .post-title { font-weight: 700; }
+  .post-dek { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .02em; padding: 3px 9px; border-radius: 999px; }
+  .badge-featured { background: linear-gradient(90deg, #B0813A, var(--gold-300)); color: #201200; }
+  .badge-category { background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-muted); }
+
+  /* Below ~640px a 4-column table forces long titles into a one-word-per-line
+     sliver; stack each row into a card instead. */
+  @media (max-width: 640px) {
+    .post-table thead { display: none; }
+    .post-table, .post-table tbody, .post-table tr, .post-table td { display: block; width: 100%; }
+    .post-table tr { padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .post-table tr:last-child { border-bottom: none; }
+    .post-table td { padding: 0; border-bottom: none; }
+    .post-table td:not(:first-child) { margin-top: 10px; }
+    .post-table td:nth-child(2), .post-table td:nth-child(3) { display: inline-block; margin-right: 10px; }
+    .post-table .edit-post-btn { width: 100%; margin-top: 10px; }
   }
-  input:focus, textarea:focus { outline: 2px solid var(--gold-400); outline-offset: 1px; }
-  input:disabled { opacity: .6; }
-  textarea#body { min-height: 320px; font-family: "SFMono-Regular", ui-monospace, Menlo, monospace; font-size: 14px; resize: vertical; }
-  .hint { color: var(--text-muted); font-size: 13px; margin-top: 6px; }
 
-  .row { display: flex; gap: 16px; }
-  .row > div { flex: 1; }
-
-  #publish-btn {
-    margin-top: 32px; background: linear-gradient(90deg, #B0813A, var(--gold-300));
-    border: none; color: #201200; font-weight: 700; padding: 14px 28px; border-radius: 999px;
-    font-size: 15px; cursor: pointer;
+  /* ---- Page Content picker + editor ---- */
+  .page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .page-card {
+    background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; text-align: left; color: var(--text); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer;
   }
-  #publish-btn:disabled { opacity: .6; cursor: default; }
+  .page-card:hover { border-color: var(--gold-400); }
+  .page-card .field-count { display: block; color: var(--text-muted); font-weight: 400; font-size: 12px; margin-top: 4px; }
 
-  .status { padding: 14px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; display: none; }
-  .status.error { background: rgba(232,153,140,.12); border: 1px solid var(--negative); color: var(--negative); }
-  .status.success { background: rgba(143,191,140,.12); border: 1px solid var(--positive); color: var(--positive); }
-  .status a { color: inherit; text-decoration: underline; }
-  .status code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 4px; }
+  .field-group { margin-bottom: 28px; }
+  .field-group h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted);
+    margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); font-weight: 700;
+  }
+  .field { margin-bottom: 16px; }
+  .field .field-hint { color: var(--text-muted); font-size: 12px; margin: 0 0 6px; text-transform: none; font-weight: 400; letter-spacing: 0; }
+  .field textarea { min-height: 70px; resize: vertical; font: inherit; }
+  .field.dirty input, .field.dirty textarea { border-color: var(--gold-400); }
+
+  .image-field { display: flex; gap: 14px; align-items: flex-start; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+  .image-field img.thumb { width: 96px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--bg-raised); flex-shrink: 0; }
+  .image-field .image-field-body { flex: 1; min-width: 0; }
+  .image-field .alt-input { margin-top: 8px; }
+  .image-field .replace-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .image-field .replace-row input[type=file] { display: none; }
+
+  .save-bar { background: var(--bg); padding: 20px 0 8px; margin-top: 8px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+  .save-bar .dirty-note { color: var(--text-muted); font-size: 13px; }
+
+  /* ---- Brand assets ---- */
+  .brand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .brand-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .brand-card img.thumb { width: 100%; height: 100px; object-fit: contain; background: var(--bg-raised); border-radius: 8px; margin-bottom: 12px; }
+  .brand-card h3 { font-size: 14px; margin: 0 0 4px; }
+  .brand-card .src { color: var(--text-muted); font-size: 12px; word-break: break-all; margin: 0 0 12px; }
+  .brand-card input[type=file] { display: none; }
 </style>
 </head>
 <body>
   <header>
-    <div><h1 style="display:inline">Advibe CMS</h1><span class="mode-tag" id="mode-tag">New post</span></div>
+    <h1>Advibe CMS</h1>
     <nav>
-      <a href="/editor">New post</a>
       <button id="logout-btn" type="button">Sign out</button>
     </nav>
   </header>
 
   <main>
-    <div class="find-bar">
-      <input id="find-slug" placeholder="Edit an existing post by slug (e.g. welcome-to-the-advibe-blog)">
-      <button id="find-btn" type="button">Open</button>
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="posts" role="tab" aria-selected="true">Blog Posts</button>
+      <button class="tab-btn" data-tab="pages" role="tab" aria-selected="false">Page Content</button>
+      <button class="tab-btn" data-tab="brand" role="tab" aria-selected="false">Brand Assets</button>
     </div>
 
-    <p class="status" id="status"></p>
+    <!-- ===================== Blog Posts ===================== -->
+    <section id="panel-posts" class="tab-panel">
 
-    <form id="post-form">
-      <label for="title">Blog title</label>
-      <input id="title" name="title" required placeholder="Why we're starting a blog">
+      <div id="posts-list-view">
+        <div class="panel-head">
+          <p class="hint" style="margin:0;">Every post in the timeline at <code>/blog/</code>. Open one to edit it — saving updates the live site the same way publishing a new post does.</p>
+          <button id="new-post-btn" class="btn-pill" type="button">+ New post</button>
+        </div>
+        <p class="status" id="posts-status"></p>
+        <table class="post-table" id="posts-table" hidden>
+          <thead><tr><th>Post</th><th>Date</th><th>Category</th><th></th></tr></thead>
+          <tbody id="posts-tbody"></tbody>
+        </table>
+      </div>
 
-      <label for="slug">Slug</label>
-      <input id="slug" name="slug" required placeholder="why-were-starting-a-blog">
-      <p class="hint" id="slug-hint">Auto-filled from the title — edit it if you want a different URL.</p>
+      <div id="posts-form-view" hidden>
+        <button class="link-btn" id="back-to-list-btn" type="button">← All posts</button>
+        <div>
+          <span id="mode-tag" class="hint" style="display:block;margin-bottom:4px;">New post</span>
+        </div>
 
-      <label for="imageUrl">Featured image URL <span style="text-transform:none;font-weight:400;">(optional — used for social share previews only)</span></label>
-      <input id="imageUrl" name="imageUrl" placeholder="https://…">
+        <div class="find-bar">
+          <input id="find-slug" placeholder="Edit an existing post by slug (e.g. welcome-to-the-advibe-blog)">
+          <button id="find-btn" type="button" class="btn-secondary">Open</button>
+        </div>
 
-      <label for="description">SEO description <span style="text-transform:none;font-weight:400;">(optional — shown under the title and used for search/social previews; auto-derived from the first paragraph if left blank)</span></label>
-      <input id="description" name="description" maxlength="200">
+        <p class="status" id="status"></p>
 
-      <label for="body">Blog body</label>
-      <textarea id="body" name="body" required placeholder="Paste Markdown from ChatGPT/AI directly, or write plain paragraphs separated by a blank line.
+        <form id="post-form">
+          <label for="title">Blog title</label>
+          <input id="title" name="title" required placeholder="Why we're starting a blog">
+
+          <label for="slug">Slug</label>
+          <input id="slug" name="slug" required placeholder="why-were-starting-a-blog">
+          <p class="hint" id="slug-hint">Auto-filled from the title — edit it if you want a different URL.</p>
+
+          <label for="imageUrl">Featured image <span style="text-transform:none;font-weight:400;">(optional — used for social share previews only)</span></label>
+          <div class="image-field">
+            <img class="thumb" id="imageUrl-thumb" alt="" hidden>
+            <div class="image-field-body">
+              <input id="imageUrl" name="imageUrl" placeholder="https://… or upload a file">
+              <div class="replace-row">
+                <button type="button" class="btn-secondary" id="imageUrl-upload-btn">Upload image</button>
+                <input type="file" id="imageUrl-file" accept="image/png,image/jpeg,image/webp,image/gif">
+                <span class="hint" id="imageUrl-upload-status" style="margin:0;"></span>
+              </div>
+            </div>
+          </div>
+
+          <label for="description">SEO description <span style="text-transform:none;font-weight:400;">(optional — shown under the title and used for search/social previews; auto-derived from the first paragraph if left blank)</span></label>
+          <input id="description" name="description" maxlength="200">
+
+          <label for="body">Blog body</label>
+          <textarea id="body" name="body" required placeholder="Paste Markdown from ChatGPT/AI directly, or write plain paragraphs separated by a blank line.
 
 ## A heading
 
@@ -103,41 +224,47 @@
 &gt; A pull-quote / blockquote.
 
 **Bold**, *italic*, and [a link](https://example.com) all work inline."></textarea>
-      <p class="hint">Blank line = new paragraph. "# " or "## " becomes a heading, "### " a sub-heading, "&gt; " a blockquote, "- " or "* " a bullet list. Inline: **bold**, *italic*, [text](url).</p>
+          <p class="hint">Blank line = new paragraph. "# " or "## " becomes a heading, "### " a sub-heading, "&gt; " a blockquote, "- " or "* " a bullet list. Inline: **bold**, *italic*, [text](url).</p>
 
-      <button type="submit" id="publish-btn">Publish</button>
-    </form>
+          <button type="submit" id="publish-btn" class="btn-pill" style="margin-top:12px;">Publish</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===================== Page Content ===================== -->
+    <section id="panel-pages" class="tab-panel" hidden>
+
+      <div id="pages-picker-view">
+        <p class="hint">Pick a page to edit its headings, paragraphs, button text, and photos. Shared header/nav/footer aren't covered here — every page hand-duplicates that chrome, so it isn't editable per-page yet.</p>
+        <p class="status" id="pages-list-status"></p>
+        <div class="page-grid" id="page-grid"></div>
+      </div>
+
+      <div id="pages-editor-view" hidden>
+        <button class="link-btn" id="back-to-pages-btn" type="button">← All pages</button>
+        <h2 id="page-editor-title" style="margin:0 0 4px;font-size:20px;"></h2>
+        <p class="hint">Paragraphs support <code>**bold**</code>, <code>*italic*</code>, <code>[text](url)</code> links, and <code>==highlight==</code> for the gold accent color.</p>
+        <p class="status" id="page-status"></p>
+        <div id="page-groups"></div>
+        <div class="save-bar">
+          <button id="save-page-btn" class="btn-pill" type="button" disabled>Save changes</button>
+          <span class="dirty-note" id="dirty-note"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Brand Assets ===================== -->
+    <section id="panel-brand" class="tab-panel" hidden>
+      <p class="hint">These images appear on every page (logo, favicon, and the default social-share image). Replacing one here updates it everywhere in a single commit — for a photo that only belongs to one page, use Page Content instead.</p>
+      <p class="status" id="brand-status"></p>
+      <div class="brand-grid" id="brand-grid"></div>
+    </section>
   </main>
 
   <script>
-    const els = {
-      modeTag: document.getElementById("mode-tag"),
-      status: document.getElementById("status"),
-      form: document.getElementById("post-form"),
-      title: document.getElementById("title"),
-      slug: document.getElementById("slug"),
-      slugHint: document.getElementById("slug-hint"),
-      imageUrl: document.getElementById("imageUrl"),
-      description: document.getElementById("description"),
-      body: document.getElementById("body"),
-      publishBtn: document.getElementById("publish-btn"),
-      findSlug: document.getElementById("find-slug"),
-      findBtn: document.getElementById("find-btn"),
-      logoutBtn: document.getElementById("logout-btn"),
-    };
-
-    let mode = "create";
-    let slugTouched = false;
-
-    function showStatus(kind, html) {
-      els.status.className = "status " + kind;
-      els.status.innerHTML = html;
-      els.status.style.display = "block";
-    }
-    function hideStatus() {
-      els.status.style.display = "none";
-    }
-
+    // ============================================================
+    // Shared helpers
+    // ============================================================
     function slugify(input) {
       return String(input)
         .toLowerCase()
@@ -148,16 +275,155 @@
         .slice(0, 80);
     }
 
-    els.title.addEventListener("input", () => {
-      if (!slugTouched && mode === "create") els.slug.value = slugify(els.title.value);
-    });
-    els.slug.addEventListener("input", () => { slugTouched = true; });
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadImage(file, folder) {
+      const dataBase64 = await fileToBase64(file);
+      const res = await fetch("/api/images/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, mimeType: file.type, dataBase64, folder }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Upload failed.");
+      return data.path;
+    }
+
+    function setStatus(el, kind, html) {
+      el.className = "status " + kind;
+      el.innerHTML = html;
+      el.style.display = "block";
+    }
+    function hideStatus(el) {
+      el.style.display = "none";
+    }
 
     async function requireAuth() {
       const res = await fetch("/api/me");
       const data = await res.json();
       if (!data.authenticated) window.location.href = "/login";
     }
+
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await fetch("/api/logout", { method: "POST" });
+      window.location.href = "/login";
+    });
+
+    // ============================================================
+    // Tabs
+    // ============================================================
+    const tabButtons = Array.from(document.querySelectorAll(".tab-btn"));
+    const panels = { posts: document.getElementById("panel-posts"), pages: document.getElementById("panel-pages"), brand: document.getElementById("panel-brand") };
+    let activeTab = null;
+
+    function showTab(name) {
+      if (activeTab === name) return;
+      activeTab = name;
+      for (const btn of tabButtons) {
+        const isActive = btn.dataset.tab === name;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", String(isActive));
+      }
+      for (const key of Object.keys(panels)) panels[key].hidden = key !== name;
+      if (name === "pages" && !pagesLoaded) loadPageGrid();
+      if (name === "brand" && !brandLoaded) loadBrandAssets();
+    }
+    for (const btn of tabButtons) btn.addEventListener("click", () => showTab(btn.dataset.tab));
+
+    // ============================================================
+    // Blog Posts
+    // ============================================================
+    const postsListView = document.getElementById("posts-list-view");
+    const postsFormView = document.getElementById("posts-form-view");
+    const postsStatus = document.getElementById("posts-status");
+    const postsTable = document.getElementById("posts-table");
+    const postsTbody = document.getElementById("posts-tbody");
+
+    const els = {
+      modeTag: document.getElementById("mode-tag"),
+      status: document.getElementById("status"),
+      form: document.getElementById("post-form"),
+      title: document.getElementById("title"),
+      slug: document.getElementById("slug"),
+      slugHint: document.getElementById("slug-hint"),
+      imageUrl: document.getElementById("imageUrl"),
+      imageUrlThumb: document.getElementById("imageUrl-thumb"),
+      imageUrlUploadBtn: document.getElementById("imageUrl-upload-btn"),
+      imageUrlFile: document.getElementById("imageUrl-file"),
+      imageUrlUploadStatus: document.getElementById("imageUrl-upload-status"),
+      description: document.getElementById("description"),
+      body: document.getElementById("body"),
+      publishBtn: document.getElementById("publish-btn"),
+      findSlug: document.getElementById("find-slug"),
+      findBtn: document.getElementById("find-btn"),
+    };
+
+    let mode = "create";
+    let slugTouched = false;
+    let postsLoaded = false;
+
+    els.title.addEventListener("input", () => {
+      if (!slugTouched && mode === "create") els.slug.value = slugify(els.title.value);
+    });
+    els.slug.addEventListener("input", () => { slugTouched = true; });
+
+    function refreshImageThumb() {
+      const url = els.imageUrl.value.trim();
+      if (url) { els.imageUrlThumb.src = url; els.imageUrlThumb.hidden = false; }
+      else els.imageUrlThumb.hidden = true;
+    }
+    els.imageUrl.addEventListener("input", refreshImageThumb);
+    els.imageUrlUploadBtn.addEventListener("click", () => els.imageUrlFile.click());
+    els.imageUrlFile.addEventListener("change", async () => {
+      const file = els.imageUrlFile.files[0];
+      if (!file) return;
+      els.imageUrlUploadStatus.textContent = "Uploading…";
+      try {
+        const path = await uploadImage(file, "images/blog");
+        els.imageUrl.value = path;
+        refreshImageThumb();
+        els.imageUrlUploadStatus.textContent = "Uploaded.";
+      } catch (err) {
+        els.imageUrlUploadStatus.textContent = err.message || "Upload failed.";
+      } finally {
+        els.imageUrlFile.value = "";
+      }
+    });
+
+    function resetPostForm() {
+      mode = "create";
+      slugTouched = false;
+      els.slug.disabled = false;
+      els.modeTag.textContent = "New post";
+      els.publishBtn.textContent = "Publish";
+      els.form.reset();
+      refreshImageThumb();
+      hideStatus(els.status);
+    }
+
+    function showPostForm() {
+      postsListView.hidden = true;
+      postsFormView.hidden = false;
+    }
+    function showPostsList() {
+      postsFormView.hidden = true;
+      postsListView.hidden = false;
+      history.replaceState(null, "", "/editor");
+      loadPostsList();
+    }
+
+    document.getElementById("new-post-btn").addEventListener("click", () => {
+      resetPostForm();
+      showPostForm();
+    });
+    document.getElementById("back-to-list-btn").addEventListener("click", showPostsList);
 
     function setEditMode(slug) {
       mode = "edit";
@@ -170,11 +436,12 @@
     }
 
     async function loadForEdit(slug) {
-      hideStatus();
+      showPostForm();
+      hideStatus(els.status);
       const res = await fetch("/api/edit/" + encodeURIComponent(slug));
       const data = await res.json();
       if (!data.ok) {
-        showStatus("error", data.error || "Could not load that post.");
+        setStatus(els.status, "error", data.error || "Could not load that post.");
         return;
       }
       setEditMode(data.slug);
@@ -182,6 +449,7 @@
       els.imageUrl.value = data.imageUrl || "";
       els.description.value = data.dek || "";
       els.body.value = data.body || "";
+      refreshImageThumb();
     }
 
     els.findBtn.addEventListener("click", () => {
@@ -189,14 +457,9 @@
       if (slug) window.location.href = "/editor?slug=" + encodeURIComponent(slug);
     });
 
-    els.logoutBtn.addEventListener("click", async () => {
-      await fetch("/api/logout", { method: "POST" });
-      window.location.href = "/login";
-    });
-
     els.form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      hideStatus();
+      hideStatus(els.status);
       els.publishBtn.disabled = true;
       els.publishBtn.textContent = mode === "edit" ? "Saving…" : "Publishing…";
 
@@ -215,7 +478,8 @@
         });
         const data = await res.json();
         if (data.ok) {
-          showStatus(
+          setStatus(
+            els.status,
             "success",
             (data.mode === "edit" ? "Saved. " : "Published. ") +
               'Commit <a href="' + data.commitUrl + '" target="_blank" rel="noopener">' + data.commitSha.slice(0, 7) + "</a> is on <code>main</code> — " +
@@ -224,21 +488,312 @@
           );
           if (data.mode === "create") setEditMode(data.slug);
         } else {
-          showStatus("error", data.error || "Something went wrong.");
+          setStatus(els.status, "error", data.error || "Something went wrong.");
         }
       } catch {
-        showStatus("error", "Network error — please try again.");
+        setStatus(els.status, "error", "Network error — please try again.");
       } finally {
         els.publishBtn.disabled = false;
         els.publishBtn.textContent = mode === "edit" ? "Save changes" : "Publish";
       }
     });
 
+    async function loadPostsList() {
+      hideStatus(postsStatus);
+      postsTable.hidden = true;
+      setStatus(postsStatus, "info", "Loading posts…");
+      try {
+        const res = await fetch("/api/posts");
+        const data = await res.json();
+        if (!data.ok) { setStatus(postsStatus, "error", data.error || "Could not load posts."); return; }
+        postsLoaded = true;
+        hideStatus(postsStatus);
+        postsTbody.innerHTML = "";
+        for (const post of data.posts) {
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            '<td><div class="post-title"></div><div class="post-dek"></div></td>' +
+            '<td>' + (post.dateLabel || "") + '</td>' +
+            '<td><span class="badge badge-category"></span>' + (post.featured ? ' <span class="badge badge-featured">Featured</span>' : "") + '</td>' +
+            '<td><button type="button" class="btn-secondary edit-post-btn">Edit</button></td>';
+          tr.querySelector(".post-title").textContent = post.title;
+          tr.querySelector(".post-dek").textContent = post.dek;
+          tr.querySelector(".badge-category").textContent = post.category;
+          tr.querySelector(".edit-post-btn").addEventListener("click", () => {
+            history.replaceState(null, "", "/editor?slug=" + encodeURIComponent(post.slug));
+            loadForEdit(post.slug);
+          });
+          postsTbody.appendChild(tr);
+        }
+        postsTable.hidden = data.posts.length === 0;
+        if (data.posts.length === 0) setStatus(postsStatus, "info", "No posts yet — use “+ New post” to publish the first one.");
+      } catch {
+        setStatus(postsStatus, "error", "Network error loading posts.");
+      }
+    }
+
+    // ============================================================
+    // Page Content
+    // ============================================================
+    const pageGrid = document.getElementById("page-grid");
+    const pagesListStatus = document.getElementById("pages-list-status");
+    const pagesPickerView = document.getElementById("pages-picker-view");
+    const pagesEditorView = document.getElementById("pages-editor-view");
+    const pageEditorTitle = document.getElementById("page-editor-title");
+    const pageStatus = document.getElementById("page-status");
+    const pageGroupsEl = document.getElementById("page-groups");
+    const savePageBtn = document.getElementById("save-page-btn");
+    const dirtyNote = document.getElementById("dirty-note");
+    let pagesLoaded = false;
+    let currentPageSlug = null;
+    let pageDirty = new Map(); // field id -> { id, value } | { id, src, alt }
+
+    async function loadPageGrid() {
+      hideStatus(pagesListStatus);
+      setStatus(pagesListStatus, "info", "Loading pages…");
+      try {
+        const res = await fetch("/api/pages");
+        const data = await res.json();
+        if (!data.ok) { setStatus(pagesListStatus, "error", data.error || "Could not load pages."); return; }
+        pagesLoaded = true;
+        hideStatus(pagesListStatus);
+        pageGrid.innerHTML = "";
+        for (const page of data.pages) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "page-card";
+          btn.textContent = page.label;
+          btn.addEventListener("click", () => openPageEditor(page.slug, page.label));
+          pageGrid.appendChild(btn);
+        }
+      } catch {
+        setStatus(pagesListStatus, "error", "Network error loading pages.");
+      }
+    }
+
+    function updateSaveBarState() {
+      const n = pageDirty.size;
+      savePageBtn.disabled = n === 0;
+      dirtyNote.textContent = n === 0 ? "" : n + " field" + (n === 1 ? "" : "s") + " changed";
+    }
+
+    function markFieldDirty(fieldEl, id, patch) {
+      pageDirty.set(id, Object.assign({ id }, patch));
+      fieldEl.classList.add("dirty");
+      updateSaveBarState();
+    }
+
+    function renderTextField(field) {
+      const wrap = document.createElement("div");
+      wrap.className = "field";
+      const isShort = field.tag === "h1" || field.tag === "h2" || field.tag === "h3" || field.tag === "h4" || field.tag === "span";
+      wrap.innerHTML =
+        '<p class="field-hint">' + field.hint + '</p>' +
+        (isShort ? '<input type="text">' : '<textarea rows="3"></textarea>');
+      const input = wrap.querySelector("input, textarea");
+      input.value = field.value;
+      input.addEventListener("input", () => markFieldDirty(wrap, field.id, { value: input.value }));
+      return wrap;
+    }
+
+    function renderImageField(field) {
+      const wrap = document.createElement("div");
+      wrap.className = "field";
+      wrap.innerHTML =
+        '<p class="field-hint">' + field.hint + '</p>' +
+        '<div class="image-field">' +
+        '  <img class="thumb" alt="">' +
+        '  <div class="image-field-body">' +
+        '    <input type="text" class="alt-input" placeholder="Alt text (describe the photo for screen readers)">' +
+        '    <div class="replace-row">' +
+        '      <button type="button" class="btn-secondary replace-btn">Replace image</button>' +
+        '      <input type="file" class="file-input" accept="image/png,image/jpeg,image/webp,image/gif">' +
+        '      <span class="hint upload-status" style="margin:0;"></span>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+      const thumb = wrap.querySelector(".thumb");
+      const altInput = wrap.querySelector(".alt-input");
+      const replaceBtn = wrap.querySelector(".replace-btn");
+      const fileInput = wrap.querySelector(".file-input");
+      const uploadStatus = wrap.querySelector(".upload-status");
+
+      altInput.value = field.alt || "";
+      altInput.addEventListener("input", () => {
+        const current = pageDirty.get(field.id) || { src: field.src };
+        markFieldDirty(wrap, field.id, { src: current.src, alt: altInput.value });
+      });
+      replaceBtn.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+        uploadStatus.textContent = "Uploading…";
+        try {
+          const folder = field.src.includes("/") ? "images/" + field.src.split("/").slice(1, -1).join("/") : "images";
+          const path = await uploadImage(file, folder.replace(/\/+$/, "") || "images");
+          thumb.src = resolveSiteAssetUrl(path);
+          markFieldDirty(wrap, field.id, { src: path, alt: altInput.value });
+          uploadStatus.textContent = "Uploaded — will apply on Save.";
+        } catch (err) {
+          uploadStatus.textContent = err.message || "Upload failed.";
+        } finally {
+          fileInput.value = "";
+        }
+      });
+      thumb.src = resolveSiteAssetUrl(field.src);
+      return wrap;
+    }
+
+    // Page-content images are stored with paths relative to site/ (e.g.
+    // "images/x.jpg"); this CMS is a separate deployment, so thumbnails load
+    // straight from the live site rather than assuming a local dev server.
+    function resolveSiteAssetUrl(relPath) {
+      return "https://advibeagency.me/" + relPath.replace(/^\/+/, "");
+    }
+
+    async function openPageEditor(slug, label) {
+      currentPageSlug = slug;
+      pageDirty = new Map();
+      updateSaveBarState();
+      pagesPickerView.hidden = true;
+      pagesEditorView.hidden = false;
+      pageEditorTitle.textContent = label;
+      pageGroupsEl.innerHTML = "";
+      hideStatus(pageStatus);
+      setStatus(pageStatus, "info", "Loading…");
+      try {
+        const res = await fetch("/api/pages/" + encodeURIComponent(slug));
+        const data = await res.json();
+        if (!data.ok) { setStatus(pageStatus, "error", data.error || "Could not load this page."); return; }
+        hideStatus(pageStatus);
+        for (const group of data.groups) {
+          const groupEl = document.createElement("div");
+          groupEl.className = "field-group";
+          const h3 = document.createElement("h3");
+          h3.textContent = group.label;
+          groupEl.appendChild(h3);
+          for (const field of group.fields) {
+            groupEl.appendChild(field.kind === "image" ? renderImageField(field) : renderTextField(field));
+          }
+          pageGroupsEl.appendChild(groupEl);
+        }
+      } catch {
+        setStatus(pageStatus, "error", "Network error loading this page.");
+      }
+    }
+
+    document.getElementById("back-to-pages-btn").addEventListener("click", () => {
+      pagesEditorView.hidden = true;
+      pagesPickerView.hidden = false;
+    });
+
+    savePageBtn.addEventListener("click", async () => {
+      if (pageDirty.size === 0) return;
+      savePageBtn.disabled = true;
+      savePageBtn.textContent = "Saving…";
+      hideStatus(pageStatus);
+      try {
+        const res = await fetch("/api/pages/" + encodeURIComponent(currentPageSlug), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ updates: Array.from(pageDirty.values()) }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          setStatus(
+            pageStatus,
+            "success",
+            'Saved. Commit <a href="' + data.commitUrl + '" target="_blank" rel="noopener">' + data.commitSha.slice(0, 7) + '</a> is on <code>main</code> — the existing GitHub Action will FTP it live shortly.'
+          );
+          pageDirty = new Map();
+          document.querySelectorAll("#page-groups .field.dirty").forEach((f) => f.classList.remove("dirty"));
+        } else {
+          setStatus(pageStatus, "error", data.error || "Something went wrong.");
+        }
+      } catch {
+        setStatus(pageStatus, "error", "Network error — please try again.");
+      } finally {
+        savePageBtn.textContent = "Save changes";
+        updateSaveBarState();
+      }
+    });
+
+    // ============================================================
+    // Brand Assets
+    // ============================================================
+    const brandGrid = document.getElementById("brand-grid");
+    const brandStatus = document.getElementById("brand-status");
+    let brandLoaded = false;
+
+    async function loadBrandAssets() {
+      hideStatus(brandStatus);
+      setStatus(brandStatus, "info", "Loading…");
+      try {
+        const res = await fetch("/api/brand-assets");
+        const data = await res.json();
+        if (!data.ok) { setStatus(brandStatus, "error", data.error || "Could not load brand assets."); return; }
+        brandLoaded = true;
+        hideStatus(brandStatus);
+        brandGrid.innerHTML = "";
+        for (const asset of data.assets) {
+          const card = document.createElement("div");
+          card.className = "brand-card";
+          card.innerHTML =
+            '<img class="thumb" alt="">' +
+            '<h3></h3>' +
+            '<p class="src"></p>' +
+            '<button type="button" class="btn-secondary replace-btn">Replace everywhere</button>' +
+            '<input type="file" class="file-input" accept="image/png,image/jpeg,image/webp,image/gif">' +
+            '<p class="hint upload-status" style="margin:8px 0 0;"></p>';
+          card.querySelector("h3").textContent = asset.label;
+          card.querySelector(".src").textContent = asset.src || "(not found)";
+          card.querySelector(".thumb").src = asset.src ? resolveSiteAssetUrl(asset.src) : "";
+          const fileInput = card.querySelector(".file-input");
+          const uploadStatus = card.querySelector(".upload-status");
+          card.querySelector(".replace-btn").addEventListener("click", () => fileInput.click());
+          fileInput.addEventListener("change", async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+            uploadStatus.textContent = "Uploading and updating every page…";
+            try {
+              const dataBase64 = await fileToBase64(file);
+              const res2 = await fetch("/api/brand-assets", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ assetId: asset.id, filename: file.name, mimeType: file.type, dataBase64 }),
+              });
+              const data2 = await res2.json();
+              if (!data2.ok) throw new Error(data2.error || "Upload failed.");
+              card.querySelector(".thumb").src = resolveSiteAssetUrl(data2.path);
+              card.querySelector(".src").textContent = data2.path;
+              uploadStatus.innerHTML =
+                'Updated ' + data2.touchedPages + ' page(s). Commit <a href="' + data2.commitUrl + '" target="_blank" rel="noopener">' + data2.commitSha.slice(0, 7) + '</a> is on <code>main</code>.';
+            } catch (err) {
+              uploadStatus.textContent = err.message || "Upload failed.";
+            } finally {
+              fileInput.value = "";
+            }
+          });
+          brandGrid.appendChild(card);
+        }
+      } catch {
+        setStatus(brandStatus, "error", "Network error loading brand assets.");
+      }
+    }
+
+    // ============================================================
+    // Init
+    // ============================================================
     (async function init() {
       await requireAuth();
+      showTab("posts");
       const params = new URLSearchParams(window.location.search);
       const slug = params.get("slug");
-      if (slug) await loadForEdit(slug);
+      if (slug) {
+        await loadForEdit(slug);
+      } else {
+        showPostsList();
+      }
     })();
   </script>
 </body>
